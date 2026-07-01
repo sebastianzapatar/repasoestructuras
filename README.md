@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://static.wikia.nocookie.net/vocaloid/images/6/60/Miku_V4X.png/revision/latest" alt="Hatsune Miku" width="200"/>
+  <img src="./Hatsune_Miku.webp" alt="Hatsune Miku" width="200"/>
   
   # Repaso Interactivo de Estructuras de Datos 📚
   *Material de estudio interactivo y colecciones en Java con Genéricos, inspirado en el enfoque STEAM School de la Universidad EIA.*
