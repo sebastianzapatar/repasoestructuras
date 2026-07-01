@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Repaso de Estructuras de Datos - STEAM School</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css" id="theme">
+    <!-- Highlight.js for Java/C++ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
+    
+    <style>
+        /* STEAM School Custom Palette */
+        :root {
+            --steam-primary: #ec6551;
+            --steam-secondary: #21b8d2;
+            --steam-accent: #00DBC2;
+            --steam-dark: #1840F4;
+            --steam-peach: #FFBC7D;
+        }
+        .reveal {
+            background: linear-gradient(135deg, #0d1117 0%, #1e1b4b 100%);
+            font-family: 'Poppins', sans-serif;
+            color: white;
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+            color: var(--steam-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .reveal .accent { color: var(--steam-accent); font-weight: bold;}
+        .reveal .primary { color: var(--steam-primary); font-weight: bold;}
+        .reveal .peach { color: var(--steam-peach); font-weight: bold;}
+        
+        .reveal table {
+            font-size: 0.6em;
+            width: 100%;
+        }
+        .reveal th {
+            background-color: var(--steam-dark);
+            color: white;
+        }
+        .reveal td, .reveal th {
+            border: 1px solid var(--steam-secondary);
+        }
+        .box {
+            background: rgba(255,255,255,0.05);
+            border-left: 5px solid var(--steam-primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 0.8em;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- Portada -->
+            <section>
+                <h1>Estructuras de Datos</h1>
+                <h3 class="primary">Sesión de Repaso</h3>
+            </section>
+
+            <!-- 1.1 Estructuras Lineales -->
+            <section>
+                <section>
+                    <h2>1.1 Estructuras Lineales</h2>
+                    <p class="primary">¿Cuándo usar cada una?</p>
+                </section>
+                <section>
+                    <h3>Opciones y Usos</h3>
+                    <ul style="font-size: 0.8em;">
+                        <li><span class="accent">Vector (ArrayList):</span> Acceso aleatorio muy rápido. Útil cuando los datos cambian poco de tamaño o solo crecen al final.</li>
+                        <li><span class="accent">Lista Enlazada (LinkedList):</span> Inserciones y eliminaciones frecuentes en cualquier posición (especialmente al inicio).</li>
+                        <li><span class="accent">Pila (Stack):</span> Útil para historiales, deshacer/rehacer, o evaluación de expresiones. Se rige por LIFO (Último en entrar, primero en salir).</li>
+                        <li><span class="accent">Cola (Queue):</span> Procesamiento por turnos, buffers, o algoritmos como BFS. Se rige por FIFO (Primero en entrar, primero en salir).</li>
+                        <li><span class="accent">Cola de Prioridad:</span> Planificadores de tareas, algoritmo de Dijkstra, o encontrar el elemento máximo/mínimo dinámicamente.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Comparativa</h3>
+                    <table>
+                        <tr>
+                            <th>Estructura</th>
+                            <th>Búsqueda</th>
+                            <th>Inserción</th>
+                            <th>Eliminación</th>
+                        </tr>
+                        <tr>
+                            <td>Vector</td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                        </tr>
+                        <tr>
+                            <td>Lista Enlazada</td>
+                            <td>O(n)</td>
+                            <td><span class="accent">O(1)</span>*</td>
+                            <td><span class="accent">O(1)</span>*</td>
+                        </tr>
+                        <tr>
+                            <td>Pila / Cola</td>
+                            <td>O(n)</td>
+                            <td><span class="accent">O(1)</span></td>
+                            <td><span class="accent">O(1)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Cola de Prioridad</td>
+                            <td>O(n)</td>
+                            <td><span class="accent">O(log n)</span></td>
+                            <td><span class="accent">O(log n)</span></td>
+                        </tr>
+                    </table>
+                    <p style="font-size: 0.5em; text-align:left;">* Conociendo la referencia al nodo exacto que se va a modificar.</p>
+                </section>
+                <section>
+                    <h3>Profundizando: Pilas y Colas</h3>
+                    <div style="display: flex; justify-content: space-around; font-size: 0.7em;">
+                        <div class="box" style="width: 45%; text-align: center;">
+                            <strong>Pila (Stack) - LIFO</strong><br>
+                            Último en entrar, Primero en salir.<br><br>
+                            <div style="font-size: 1.5em; border: 2px solid var(--steam-secondary); border-top: none; padding: 10px; width: 100px; margin: auto;">
+                                <span>Top -> 🥞</span><br>
+                                <span>🥞</span><br>
+                                <span>🥞</span>
+                            </div>
+                            <br><em>Ej: Botón atrás del navegador, recursividad.</em>
+                        </div>
+                        <div class="box" style="width: 45%; text-align: center;">
+                            <strong>Cola (Queue) - FIFO</strong><br>
+                            Primero en entrar, Primero en salir.<br><br>
+                            <div style="font-size: 1.5em; border: 2px solid var(--steam-secondary); border-left: none; border-right: none; padding: 10px; margin: auto;">
+                                Salida <- 🚶‍♂️ 🚶‍♂️ 🚶‍♂️ <- Entrada
+                            </div>
+                            <br><em>Ej: Fila del supermercado, impresión.</em>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h3>1. Lista Simple</h3>
+                    <p style="font-size: 0.6em; text-align: left;">Nodos apuntan al siguiente. Un solo sentido. Ideal para implementaciones donde el acceso principal es desde la cabeza.</p>
+                    <svg width="600" height="150" style="margin:auto; display:block;">
+                        <defs>
+                            <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#1840F4" />
+                            </marker>
+                            <marker id="arrow-peach" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#ec6551" />
+                            </marker>
+                        </defs>
+                        <!-- Node 1 -->
+                        <g transform="translate(50, 50)">
+                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
+                            <circle cx="50" cy="20" r="3" fill="black"/>
+                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        </g>
+                        <!-- Node 2 -->
+                        <g transform="translate(190, 50)">
+                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
+                            <circle cx="50" cy="20" r="3" fill="black"/>
+                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        </g>
+                        <!-- Node 3 -->
+                        <g transform="translate(330, 50)">
+                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
+                            <circle cx="50" cy="20" r="3" fill="black"/>
+                            <line x1="50" y1="20" x2="110" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        </g>
+                        <!-- NULL -->
+                        <text x="450" y="75" fill="white" font-weight="bold">NULL</text>
+                    </svg>
+                </section>
+                <section>
+                    <h3>2. Lista Circular Simple</h3>
+                    <p style="font-size: 0.6em; text-align: left;">El último nodo apunta de nuevo a la cabeza. Muy útil para algoritmos de planificación o buffers.</p>
+                    <svg width="600" height="180" style="margin:auto; display:block;">
+                        <!-- Node 1 -->
+                        <g transform="translate(50, 50)">
+                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
+                            <circle cx="50" cy="20" r="3" fill="black"/>
+                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        </g>
+                        <!-- Node 2 -->
+                        <g transform="translate(190, 50)">
+                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
+                            <circle cx="50" cy="20" r="3" fill="black"/>
+                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        </g>
+                        <!-- Node 3 -->
+                        <g transform="translate(330, 50)">
+                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
+                            <circle cx="50" cy="20" r="3" fill="black"/>
+                        </g>
+                        <!-- Back arrow -->
+                        <path d="M 380 90 L 380 140 L 70 140 L 70 95" fill="none" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                    </svg>
+                </section>
+                <section>
+                    <h3>3. Lista Doblemente Ligada</h3>
+                    <p style="font-size: 0.6em; text-align: left;">Nodos apuntan al siguiente y al anterior. Permite iterar y borrar eficientemente en ambas direcciones.</p>
+                    <svg width="680" height="150" style="margin:auto; display:block;">
+                        <!-- Node 1 -->
+                        <g transform="translate(100, 50)">
+                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
+                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
+                            <circle cx="75" cy="20" r="3" fill="black"/>
+                            <circle cx="15" cy="20" r="3" fill="black"/>
+                        </g>
+                        <!-- Node 2 -->
+                        <g transform="translate(280, 50)">
+                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
+                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
+                            <circle cx="75" cy="20" r="3" fill="black"/>
+                            <circle cx="15" cy="20" r="3" fill="black"/>
+                        </g>
+                        <!-- Node 3 -->
+                        <g transform="translate(460, 50)">
+                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
+                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
+                            <circle cx="75" cy="20" r="3" fill="black"/>
+                            <circle cx="15" cy="20" r="3" fill="black"/>
+                        </g>
+
+                        <!-- Next Pointers -->
+                        <line x1="175" y1="60" x2="270" y2="60" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <line x1="355" y1="60" x2="450" y2="60" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <!-- Prev Pointers -->
+                        <line x1="295" y1="80" x2="200" y2="80" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+                        <line x1="475" y1="80" x2="380" y2="80" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+
+                        <!-- NULLs -->
+                        <line x1="535" y1="60" x2="590" y2="60" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <text x="600" y="65" fill="white" font-weight="bold">NULL</text>
+
+                        <line x1="115" y1="80" x2="60" y2="80" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+                        <text x="10" y="85" fill="white" font-weight="bold">NULL</text>
+                    </svg>
+                </section>
+                <section>
+                    <h3>4. Lista Doble Circular</h3>
+                    <p style="font-size: 0.6em; text-align: left;">Máxima flexibilidad. La cabeza y la cola están conectadas en ambas direcciones.</p>
+                    <svg width="680" height="200" style="margin:auto; display:block;">
+                        <!-- Node 1 -->
+                        <g transform="translate(100, 70)">
+                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
+                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
+                            <circle cx="75" cy="20" r="3" fill="black"/>
+                            <circle cx="15" cy="20" r="3" fill="black"/>
+                        </g>
+                        <!-- Node 2 -->
+                        <g transform="translate(280, 70)">
+                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
+                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
+                            <circle cx="75" cy="20" r="3" fill="black"/>
+                            <circle cx="15" cy="20" r="3" fill="black"/>
+                        </g>
+                        <!-- Node 3 -->
+                        <g transform="translate(460, 70)">
+                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
+                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
+                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
+                            <circle cx="75" cy="20" r="3" fill="black"/>
+                            <circle cx="15" cy="20" r="3" fill="black"/>
+                        </g>
+
+                        <!-- Next Pointers -->
+                        <line x1="175" y1="80" x2="270" y2="80" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <line x1="355" y1="80" x2="450" y2="80" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <!-- Prev Pointers -->
+                        <line x1="295" y1="100" x2="200" y2="100" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+                        <line x1="475" y1="100" x2="380" y2="100" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+
+                        <!-- Circular Next (Blue) -->
+                        <path d="M 535 80 L 580 80 L 580 20 L 145 20 L 145 65" fill="none" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        
+                        <!-- Circular Prev (Peach) -->
+                        <path d="M 115 100 L 70 100 L 70 160 L 505 160 L 505 115" fill="none" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+                    </svg>
+                </section>
+                <section>
+                    <h3>Reto LeetCode (Listas)</h3>
+                    <div class="box">
+                        <strong>Linked List Cycle (Fácil) - LC 141</strong><br>
+                        Dada la cabeza de una lista enlazada, determina si tiene un ciclo en su interior.
+                    </div>
+                    <ul style="font-size: 0.7em;">
+                        <li><em>Pista (Floyd's Algorithm):</em> Usa el concepto de "Liebre y Tortuga" (dos punteros, uno avanza rápido saltando de a 2, y otro lento de a 1). Si alguna vez se encuentran, hay un ciclo. (Tiempo: O(n), Memoria: O(1)).</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- 1.2 Repaso de árboles -->
+            <section>
+                <section>
+                    <h2>1.2 Árboles</h2>
+                    <p class="primary">Operaciones Clave</p>
+                </section>
+                <section>
+                    <h3>Complejidad en Árboles (BST)</h3>
+                    <table>
+                        <tr>
+                            <th>Estructura</th>
+                            <th>Búsqueda</th>
+                            <th>Inserción</th>
+                            <th>Eliminación</th>
+                        </tr>
+                        <tr>
+                            <td>BST Equilibrado (AVL, Rojo-Negro)</td>
+                            <td><span class="accent">O(log n)</span></td>
+                            <td><span class="accent">O(log n)</span></td>
+                            <td><span class="accent">O(log n)</span></td>
+                        </tr>
+                        <tr>
+                            <td>BST Desbalanceado (Peor caso)</td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                            <td>O(n)</td>
+                        </tr>
+                    </table>
+                    <ul style="font-size: 0.7em; margin-top: 20px;">
+                        <li><span class="peach">Recorridos (O(n)):</span> Inorden (imprime ordenado), Preorden (copiar), Postorden (borrar).</li>
+                        <li><span class="peach">Altura y Hojas (O(n)):</span> Calculadas mediante recursividad (e.g. 1 + max(alturaIzq, alturaDer)).</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Árbol Binario (BST Normal)</h3>
+                    <div style="font-size: 0.5em; margin-bottom: 5px;">
+                        <input type="number" id="nodeValueBST" placeholder="Valor" style="padding: 5px; border-radius: 5px;">
+                        <button onclick="insertNodeBST()" style="background-color: var(--steam-accent); color: black; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Insertar Nodo</button>
+                        <button onclick="resetTreeBST()" style="background-color: var(--steam-primary); color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Reiniciar</button>
+                        <span style="margin: 0 10px;">|</span>
+                        <button onclick="animateTraversal('bst', 'pre')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Preorden</button>
+                        <button onclick="animateTraversal('bst', 'in')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Inorden</button>
+                        <button onclick="animateTraversal('bst', 'post')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Postorden</button>
+                    </div>
+                    <div id="traversal-result-bst" style="font-size: 0.6em; color: var(--steam-accent); font-weight: bold; min-height: 20px; margin-bottom: 5px;"></div>
+                    <div style="background-color: white; border-radius: 10px; width: 100%; height: 350px; overflow: hidden; position: relative;">
+                        <svg id="tree-svg-bst" width="100%" height="100%" style="position: absolute; top: 0; left: 0;"></svg>
+                    </div>
+                </section>
+                <section>
+                    <h3>Árbol AVL (Auto-balanceado)</h3>
+                    <div style="font-size: 0.5em; margin-bottom: 5px;">
+                        <input type="number" id="nodeValueAVL" placeholder="Valor" style="padding: 5px; border-radius: 5px;">
+                        <button onclick="insertNodeAVL()" style="background-color: var(--steam-accent); color: black; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Insertar Nodo</button>
+                        <button onclick="resetTreeAVL()" style="background-color: var(--steam-primary); color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Reiniciar</button>
+                        <span style="margin: 0 10px;">|</span>
+                        <button onclick="animateTraversal('avl', 'pre')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Preorden</button>
+                        <button onclick="animateTraversal('avl', 'in')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Inorden</button>
+                        <button onclick="animateTraversal('avl', 'post')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Postorden</button>
+                    </div>
+                    <div id="traversal-result-avl" style="font-size: 0.6em; color: var(--steam-accent); font-weight: bold; min-height: 20px; margin-bottom: 5px;"></div>
+                    <div style="background-color: white; border-radius: 10px; width: 100%; height: 350px; overflow: hidden; position: relative;">
+                        <svg id="tree-svg-avl" width="100%" height="100%" style="position: absolute; top: 0; left: 0;"></svg>
+                    </div>
+                    
+                    <script>
+                        // ================= BST =================
+                        let bstRootObj = null;
+
+                        class TreeNodeBase {
+                            constructor(val) {
+                                this.val = val;
+                                this.left = null;
+                                this.right = null;
+                                this.height = 1;
+                            }
+                        }
+
+                        function insertNodeBST() {
+                            const val = parseInt(document.getElementById('nodeValueBST').value);
+                            if (isNaN(val)) return;
+                            bstRootObj = insertIntoSimpleBST(bstRootObj, val);
+                            renderTreeGeneric('tree-svg-bst', bstRootObj, 'bst');
+                            document.getElementById('nodeValueBST').value = '';
+                            document.getElementById('traversal-result-bst').innerText = '';
+                        }
+                        
+                        function resetTreeBST() {
+                            bstRootObj = null;
+                            renderTreeGeneric('tree-svg-bst', bstRootObj, 'bst');
+                            document.getElementById('traversal-result-bst').innerText = '';
+                        }
+
+                        function insertIntoSimpleBST(root, val) {
+                            if (root === null) return new TreeNodeBase(val);
+                            if (val < root.val) root.left = insertIntoSimpleBST(root.left, val);
+                            else if (val > root.val) root.right = insertIntoSimpleBST(root.right, val);
+                            return root;
+                        }
+
+                        // ================= AVL =================
+                        let avlRootObj = null;
+
+                        function insertNodeAVL() {
+                            const val = parseInt(document.getElementById('nodeValueAVL').value);
+                            if (isNaN(val)) return;
+                            avlRootObj = insertIntoAVL(avlRootObj, val);
+                            renderTreeGeneric('tree-svg-avl', avlRootObj, 'avl');
+                            document.getElementById('nodeValueAVL').value = '';
+                            document.getElementById('traversal-result-avl').innerText = '';
+                        }
+                        
+                        function resetTreeAVL() {
+                            avlRootObj = null;
+                            renderTreeGeneric('tree-svg-avl', avlRootObj, 'avl');
+                            document.getElementById('traversal-result-avl').innerText = '';
+                        }
+
+                        function getHeight(node) {
+                            if (!node) return 0;
+                            return node.height;
+                        }
+
+                        function getBalance(node) {
+                            if (!node) return 0;
+                            return getHeight(node.left) - getHeight(node.right);
+                        }
+
+                        function rightRotate(y) {
+                            let x = y.left;
+                            let T2 = x.right;
+                            x.right = y;
+                            y.left = T2;
+                            y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
+                            x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
+                            return x;
+                        }
+
+                        function leftRotate(x) {
+                            let y = x.right;
+                            let T2 = y.left;
+                            y.left = x;
+                            x.right = T2;
+                            x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
+                            y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
+                            return y;
+                        }
+
+                        function insertIntoAVL(node, val) {
+                            if (node === null) return new TreeNodeBase(val);
+                            if (val < node.val) node.left = insertIntoAVL(node.left, val);
+                            else if (val > node.val) node.right = insertIntoAVL(node.right, val);
+                            else return node; // No duplicates allowed
+
+                            node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+                            let balance = getBalance(node);
+
+                            if (balance > 1 && val < node.left.val) return rightRotate(node);
+                            if (balance < -1 && val > node.right.val) return leftRotate(node);
+                            if (balance > 1 && val > node.left.val) {
+                                node.left = leftRotate(node.left);
+                                return rightRotate(node);
+                            }
+                            if (balance < -1 && val < node.right.val) {
+                                node.right = rightRotate(node.right);
+                                return leftRotate(node);
+                            }
+                            return node;
+                        }
+
+                        // ================= ANIMACIONES DE RECORRIDOS =================
+                        let isAnimating = false;
+
+                        function getPreorder(node, arr) {
+                            if (!node) return;
+                            arr.push(node.val);
+                            getPreorder(node.left, arr);
+                            getPreorder(node.right, arr);
+                        }
+                        
+                        function getInorder(node, arr) {
+                            if (!node) return;
+                            getInorder(node.left, arr);
+                            arr.push(node.val);
+                            getInorder(node.right, arr);
+                        }
+                        
+                        function getPostorder(node, arr) {
+                            if (!node) return;
+                            getPostorder(node.left, arr);
+                            getPostorder(node.right, arr);
+                            arr.push(node.val);
+                        }
+
+                        async function animateTraversal(treeType, traversalType) {
+                            if (isAnimating) return; // Prevent concurrent animations
+                            
+                            const rootNode = treeType === 'bst' ? bstRootObj : avlRootObj;
+                            if (!rootNode) return;
+                            
+                            isAnimating = true;
+                            const resultDiv = document.getElementById('traversal-result-' + treeType);
+                            resultDiv.innerText = (traversalType.toUpperCase()) + ': ';
+                            
+                            let sequence = [];
+                            if (traversalType === 'pre') getPreorder(rootNode, sequence);
+                            if (traversalType === 'in') getInorder(rootNode, sequence);
+                            if (traversalType === 'post') getPostorder(rootNode, sequence);
+
+                            let currentResult = [];
+                            for (let val of sequence) {
+                                const circleId = 'circle-' + treeType + '-' + val;
+                                const circle = document.getElementById(circleId);
+                                
+                                // Highlight
+                                if(circle) circle.setAttribute('fill', '#ec6551'); // Primary color (red/orange)
+                                
+                                await new Promise(r => setTimeout(r, 800)); // Delay
+                                
+                                // Return to normal and append to result
+                                if(circle) circle.setAttribute('fill', '#00DBC2'); // Accent color (cyan)
+                                currentResult.push(val);
+                                resultDiv.innerText = (traversalType.toUpperCase()) + ': ' + currentResult.join('   ➔   ');
+                            }
+                            
+                            isAnimating = false;
+                        }
+
+                        // ================= RENDERIZADO GENERICO =================
+                        function renderTreeGeneric(svgId, rootNode, typePrefix) {
+                            const svg = document.getElementById(svgId);
+                            svg.innerHTML = '';
+                            if (rootNode !== null) {
+                                drawNodeGeneric(svg, rootNode, svg.clientWidth / 2, 40, svg.clientWidth / 4, 0, typePrefix);
+                            }
+                        }
+
+                        function drawNodeGeneric(svg, node, x, y, offsetX, level, typePrefix) {
+                            const radius = 20;
+                            const levelHeight = 60;
+
+                            if (node.left !== null) {
+                                const nextX = x - offsetX;
+                                const nextY = y + levelHeight;
+                                drawLineGeneric(svg, x, y, nextX, nextY);
+                                drawNodeGeneric(svg, node.left, nextX, nextY, offsetX / 1.5, level + 1, typePrefix);
+                            }
+                            
+                            if (node.right !== null) {
+                                const nextX = x + offsetX;
+                                const nextY = y + levelHeight;
+                                drawLineGeneric(svg, x, y, nextX, nextY);
+                                drawNodeGeneric(svg, node.right, nextX, nextY, offsetX / 1.5, level + 1, typePrefix);
+                            }
+
+                            drawCircleGeneric(svg, x, y, radius, node.val, typePrefix);
+                        }
+
+                        function drawLineGeneric(svg, x1, y1, x2, y2) {
+                            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                            line.setAttribute('x1', x1);
+                            line.setAttribute('y1', y1);
+                            line.setAttribute('x2', x2);
+                            line.setAttribute('y2', y2);
+                            line.setAttribute('stroke', '#1840F4');
+                            line.setAttribute('stroke-width', '3');
+                            svg.appendChild(line);
+                        }
+
+                        function drawCircleGeneric(svg, x, y, r, text, typePrefix) {
+                            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                            
+                            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                            circle.setAttribute('id', 'circle-' + typePrefix + '-' + text);
+                            circle.setAttribute('cx', x);
+                            circle.setAttribute('cy', y);
+                            circle.setAttribute('r', r);
+                            circle.setAttribute('fill', '#00DBC2');
+                            circle.setAttribute('stroke', '#0d1117');
+                            circle.setAttribute('stroke-width', '2');
+                            
+                            const textNode = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                            textNode.setAttribute('x', x);
+                            textNode.setAttribute('y', y + 5);
+                            textNode.setAttribute('text-anchor', 'middle');
+                            textNode.setAttribute('font-family', 'Poppins');
+                            textNode.setAttribute('font-weight', 'bold');
+                            textNode.setAttribute('font-size', '14px');
+                            textNode.setAttribute('fill', '#0d1117');
+                            textNode.textContent = text;
+                            
+                            g.appendChild(circle);
+                            g.appendChild(textNode);
+                            svg.appendChild(g);
+                        }
+                    </script>
+                </section>
+                <section>
+                    <h3>Problema Práctico</h3>
+                    <div class="box">
+                        <strong>Misión:</strong> Recorrer un árbol en <span class="primary">Preorden</span> e insertar el resultado en una <span class="primary">Cola de Prioridad</span> para ordenarlos.
+                    </div>
+                    <pre><code class="java" data-trim data-noescape>
+void preOrdenHaciaPQ(Nodo nodo, PriorityQueue&lt;Integer&gt; pq) {
+    if (nodo == null) return;
+    
+    // 1. Procesar raíz (insertar en PQ)
+    pq.offer(nodo.valor); 
+    
+    // 2. Izquierda
+    preOrdenHaciaPQ(nodo.izq, pq);
+    
+    // 3. Derecha
+    preOrdenHaciaPQ(nodo.der, pq);
+}
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>Reto LeetCode (Árboles)</h3>
+                    <div class="box">
+                        <strong>Lowest Common Ancestor - LCA (Medio) - LC 236</strong><br>
+                        Dado un BST y dos nodos 'p' y 'q', encuentra su ancestro común más bajo (el nodo más profundo que tiene a ambos como descendientes).
+                    </div>
+                    <ul style="font-size: 0.7em;">
+                        <li><em>Pista:</em> Aprovecha la propiedad del BST. Comienza en la raíz: si 'p' y 'q' son menores, el LCA está a la izquierda. Si son mayores, está a la derecha. Si uno es menor y otro mayor (o uno es igual a la raíz), ¡entonces la raíz actual es el LCA! (Tiempo: O(log n)).</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- 1.3 Selección de estructuras -->
+            <section>
+                <section>
+                    <h2>1.3 Selección de Estructuras</h2>
+                    <p class="primary">El mundo real</p>
+                </section>
+                <section>
+                    <h3>Problema 1: Búsqueda Constante</h3>
+                    <div class="box">
+                        <strong>Escenario:</strong> Una empresa necesita buscar usuarios constantemente por su correo electrónico o nombre de usuario. <br><br>
+                        ¿Qué usaría? (BST vs Hash vs Lista)
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Estructura</th>
+                            <th>Búsqueda</th>
+                            <th>Inserción</th>
+                            <th>Eliminación</th>
+                        </tr>
+                        <tr>
+                            <td>Lista</td>
+                            <td>O(n)</td>
+                            <td>O(1)*</td>
+                            <td>O(1)*</td>
+                        </tr>
+                        <tr>
+                            <td>BST Equilibrado</td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                            <td>O(log n)</td>
+                        </tr>
+                        <tr>
+                            <td>Hash Table (Promedio)</td>
+                            <td><span class="accent">O(1)</span></td>
+                            <td><span class="accent">O(1)</span></td>
+                            <td><span class="accent">O(1)</span></td>
+                        </tr>
+                    </table>
+                    <p style="font-size: 0.6em; text-align:left;">* ¡El <strong>Hash Table</strong> es la mejor opción! Las operaciones toman O(1) promedio, ideal para búsquedas exactas e instantáneas.</p>
+                </section>
+                <section>
+                    <h3>Problema 2: Alta Velocidad</h3>
+                    <div class="box">
+                        <strong>Escenario:</strong> Se reciben millones de registros por segundo (ej. telemetría, eventos de servidor).
+                        <br><br>¿Qué estructura usaría?
+                    </div>
+                    <ul style="font-size: 0.7em;">
+                        <li class="fragment"><strong>Solución:</strong> Una <span class="accent">Cola (Queue)</span> o un Buffer Circular (Ring Buffer).</li>
+                        <li class="fragment"><strong>¿Por qué?</strong> Las colas permiten una inserción asíncrona y eficiente en O(1) puro. Evita bloqueos y permite que otro hilo (consumidor) procese los registros a su ritmo siguiendo un patrón FIFO.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Retos LeetCode (Hash / Diseño)</h3>
+                    <div class="box">
+                        <strong>Two Sum (Fácil) - LC 1</strong><br>
+                        Dado un array de enteros y un 'target', devuelve los índices de los 2 números que suman el target.
+                    </div>
+                    <ul style="font-size: 0.6em;">
+                        <li><em>Pista:</em> Usa un HashMap para guardar el número visto y su índice. Por cada número 'x', busca si 'target - x' ya existe en el Hash. Solución en una sola pasada O(n).</li>
+                    </ul>
+                    <div class="box">
+                        <strong>LRU Cache (Medio) - LC 146</strong><br>
+                        Diseña una estructura de caché que descarte el elemento menos usado recientemente (Least Recently Used) al alcanzar su capacidad máxima.
+                    </div>
+                    <ul style="font-size: 0.6em;">
+                        <li><em>Pista de Diseño:</em> Combina un <strong>HashMap</strong> (para acceso O(1)) junto con una <strong>Lista Doblemente Ligada</strong> (para mover súper rápido el elemento más usado a la cabeza, o eliminar la cola en O(1)).</li>
+                    </ul>
+                </section>
+            </section>
+
+            <!-- 1.4 Complejidad -->
+            <section>
+                <section>
+                    <h2>1.4 Complejidad</h2>
+                    <p class="primary">Big O en código</p>
+                </section>
+                <section>
+                    <h3>Ejemplo 1</h3>
+                    <pre><code class="cpp" data-trim>
+for(int i = 1; i < n; i *= 2) {
+    for(int j = 0; j < n; j++) {
+        // Operación de tiempo constante
+    }
+}
+                    </code></pre>
+                    <div class="fragment box">
+                        <strong>Complejidad: <span class="accent">O(n log n)</span></strong><br><br>
+                        <strong>¿Por qué?</strong> <br>
+                        1. El bucle interno siempre itera 'n' veces: O(n). <br>
+                        2. El bucle externo multiplica la variable 'i' por 2 en cada paso. Alcanzar 'n' mediante multiplicaciones sucesivas toma el logaritmo base 2 de 'n' pasos: O(log n). <br>
+                        3. Ambos están anidados, por lo que multiplicamos: n * log n.
+                    </div>
+                </section>
+                <section>
+                    <h3>Ejemplo 2</h3>
+                    <pre><code class="cpp" data-trim>
+int i = 1;
+while(i < n) {
+    i *= 2;
+}
+                    </code></pre>
+                    <div class="fragment box">
+                        <strong>Complejidad: <span class="accent">O(log n)</span></strong><br><br>
+                        <strong>¿Por qué?</strong> <br>
+                        Al igual que en el bucle externo del ejemplo anterior, la variable 'i' crece exponencialmente (1, 2, 4, 8, 16...). El número de pasos requeridos para que 'i' alcance o supere 'n' es log₂(n). No depende linealmente de n.
+                    </div>
+                </section>
+                <section>
+                    <h3>Ejemplo 3: O(N²)</h3>
+                    <pre><code class="cpp" data-trim>
+for(int i = 0; i < n; i++) {
+    for(int j = 0; j < n; j++) {
+        // Operación de tiempo constante
+    }
+}
+                    </code></pre>
+                    <div class="fragment box">
+                        <strong>Complejidad: <span class="accent">O(N²)</span></strong><br><br>
+                        <strong>¿Por qué?</strong> <br>
+                        Para cada elemento de `n`, iteramos nuevamente `n` veces. Este es el comportamiento típico de algoritmos ingenuos como Bubble Sort.
+                    </div>
+                </section>
+                <section>
+                    <h3>Ejemplo 4: O(2^N)</h3>
+                    <pre><code class="cpp" data-trim>
+int fibonacci(int n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+                    </code></pre>
+                    <div class="fragment box">
+                        <strong>Complejidad: <span class="accent">O(2^N)</span></strong><br><br>
+                        <strong>¿Por qué?</strong> <br>
+                        Por cada llamada recursiva, hacemos dos llamadas más. Esto forma un árbol binario de llamadas de altura `n`, lo que resulta en un tiempo exponencial (el peor de los casos).
+                    </div>
+                </section>
+                <section>
+                    <h3>Desafíos de Entrevista</h3>
+                    <div class="box">
+                        <strong>1. Búsqueda Binaria</strong><br>
+                        En un arreglo ordenado, cortas la búsqueda a la mitad en cada paso. ¿Cuál es su complejidad?<br>
+                        <span class="fragment peach">R/ O(log N). Siempre que el tamaño del problema se divida por una fracción constante, es logarítmico.</span>
+                    </div>
+                    <div class="box">
+                        <strong>2. Bucles Secuenciales</strong><br>
+                        Un bucle itera el array A (tamaño N) y luego otro bucle separado itera el array B (tamaño M). ¿Complejidad?<br>
+                        <span class="fragment peach">R/ O(N + M). ¡NO es O(N*M)! Al no estar anidados, sus tiempos simplemente se suman.</span>
+                    </div>
+                </section>
+            </section>
+
+            <!-- 1.5 Integración -->
+            <section>
+                <section>
+                    <h2>1.5 Integración Total</h2>
+                    <p class="primary">Árbol → Recorrido → Cola de Prioridad → HashMap</p>
+                </section>
+                <section>
+                    <h3>El Reto Integral</h3>
+                    <div class="box" style="font-size: 0.7em;">
+                        Contamos con un <strong>Árbol Binario</strong> que almacena <em>tareas</em> (ID, Prioridad). <br><br>
+                        1. <strong>Recorrido:</strong> Explorar el árbol (ej. Postorden) para extraer las tareas. <br>
+                        2. <strong>Cola de Prioridad:</strong> Insertarlas en una Max-PriorityQueue para que las tareas más urgentes queden al frente. <br>
+                        3. <strong>HashMap:</strong> A medida que sacamos tareas de la cola para procesarlas, registrar su estado como 'COMPLETADA' en un HashMap utilizando su ID.
+                    </div>
+                    <p style="font-size: 0.6em;"><em>(Revisa el archivo EjemploIntegracion.java provisto para el desarrollo completo)</em></p>
+                </section>
+                <section>
+                    <h3>Reto LeetCode (Integración)</h3>
+                    <div class="box">
+                        <strong>Merge k Sorted Lists (Difícil) - LC 23</strong><br>
+                        Dadas <em>k</em> listas enlazadas que ya están ordenadas independientemente, únelas todas en una sola lista enlazada final, también ordenada.
+                    </div>
+                    <ul style="font-size: 0.7em;">
+                        <li><em>Pista Magistral:</em> Usa una <strong>Cola de Prioridad (Min-Heap)</strong>. Inserta la cabeza de cada una de las <em>k</em> listas en el Heap. Extrae el menor (se unirá a tu lista de respuesta) y, si ese nodo extraído tiene un siguiente nodo en su propia lista original, insértalo de vuelta en el Heap.</li>
+                        <li><em>Complejidad:</em> Tiempo O(N log k), donde N es el total de nodos en todas las listas.</li>
+                    </ul>
+                </section>
+            </section>
+            
+            <section>
+                <h1 class="accent">¡A Programar!</h1>
+                <p>¿Tienen alguna pregunta?</p>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts de Reveal.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+            plugins: [ RevealHighlight ]
+        });
+    </script>
+</body>
+</html>
