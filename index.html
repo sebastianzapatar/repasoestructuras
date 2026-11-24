@@ -3,7 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>Repaso de Estructuras de Datos - STEAM School</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- Typography: Poppins + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap">
     <!-- Reveal.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
@@ -12,47 +16,848 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
     
     <style>
-        /* STEAM School Custom Palette */
+        /* STEAM School Custom Palette & Spatial System */
         :root {
-            --steam-primary: #ec6551;
+            --steam-primary: #f47a66;
             --steam-secondary: #21b8d2;
             --steam-accent: #00DBC2;
             --steam-dark: #1840F4;
             --steam-peach: #FFBC7D;
+            --steam-ink: #0d1117;
+            --steam-surface: rgba(255, 255, 255, 0.045);
+            --steam-surface-strong: rgba(15, 23, 42, 0.72);
+            --steam-border: rgba(33, 184, 210, 0.28);
+            --steam-border-warm: rgba(244, 122, 102, 0.36);
+            --steam-text-muted: #b8c4e0;
+
+            /* 4px-base Spacing Scale */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
         }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: rgba(0, 219, 194, 0.28);
+            color: #ffffff;
+        }
+
         .reveal {
             background: linear-gradient(135deg, #0d1117 0%, #1e1b4b 100%);
-            font-family: 'Poppins', sans-serif;
-            color: white;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 42px;
+            color: #f4f7fb;
+            scrollbar-color: rgba(33, 184, 210, 0.45) #0d1117;
         }
+
         .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             color: var(--steam-secondary);
             text-transform: uppercase;
             font-weight: 600;
+            letter-spacing: -0.015em;
+            text-wrap: balance;
+            margin-bottom: var(--space-5);
         }
-        .reveal .accent { color: var(--steam-accent); font-weight: bold;}
-        .reveal .primary { color: var(--steam-primary); font-weight: bold;}
-        .reveal .peach { color: var(--steam-peach); font-weight: bold;}
-        
-        .reveal table {
-            font-size: 0.6em;
+
+        .reveal h1 {
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-3);
+        }
+
+        .reveal .cover-subtitle {
+            color: var(--steam-primary);
+            font-size: 1.35em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: var(--space-2);
+            margin-bottom: 0;
+        }
+
+        .reveal .section-subtitle {
+            color: var(--steam-primary);
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-top: var(--space-2);
+        }
+
+        .reveal .accent { color: var(--steam-accent); font-weight: 600; }
+        .reveal .primary { color: var(--steam-primary); font-weight: 600; }
+        .reveal .peach { color: var(--steam-peach); font-weight: 600; }
+        .reveal .muted-note {
+            font-size: 0.56em;
+            color: var(--steam-text-muted);
+            text-align: left;
+            margin-top: var(--space-4);
+            line-height: 1.45;
+        }
+
+        .reveal p {
+            line-height: 1.5;
+            text-wrap: pretty;
+        }
+
+        .reveal code:not(.hljs) {
+            font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+            font-size: 0.88em;
+            background: rgba(33, 184, 210, 0.14);
+            border: 1px solid rgba(33, 184, 210, 0.25);
+            color: var(--steam-accent);
+            padding: 0.08em 0.35em;
+            border-radius: 5px;
+        }
+
+        /* Code Blocks & WCAG-safe Monokai comments */
+        .reveal pre {
             width: 100%;
+            margin: var(--space-4) auto;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            overflow: hidden;
+        }
+        .reveal pre code {
+            font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+            padding: var(--space-5) var(--space-6);
+            line-height: 1.5;
+            max-height: 440px;
+        }
+        .reveal .hljs-comment,
+        .reveal .hljs-quote {
+            color: #b0ab96 !important;
+        }
+
+        /* Tables: full borders, tabular numbers, clear rhythm */
+        .reveal table {
+            font-size: 0.62em;
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-4) 0;
+            font-variant-numeric: tabular-nums;
+            background: rgba(13, 17, 23, 0.35);
+            border: 1px solid var(--steam-border);
+            border-radius: 10px;
+            overflow: hidden;
         }
         .reveal th {
             background-color: var(--steam-dark);
-            color: white;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: left;
         }
         .reveal td, .reveal th {
-            border: 1px solid var(--steam-secondary);
+            border: 1px solid rgba(33, 184, 210, 0.35);
+            padding: var(--space-3) var(--space-4);
+            vertical-align: middle;
         }
+        .reveal table tbody tr:last-child th,
+        .reveal table tbody tr:last-child td {
+            border-bottom: 1px solid rgba(33, 184, 210, 0.35);
+        }
+        .reveal tbody tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        /* Content Surfaces (replacing side-tab bars with full-border surfaces) */
         .box {
-            background: rgba(255,255,255,0.05);
-            border-left: 5px solid var(--steam-primary);
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
-            font-size: 0.8em;
+            background: var(--steam-surface);
+            border: 1px solid var(--steam-border);
+            padding: var(--space-5) var(--space-6);
+            margin: var(--space-4) 0;
+            border-radius: 10px;
+            font-size: 0.74em;
+            line-height: 1.5;
             text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .box--warm {
+            border-color: var(--steam-border-warm);
+            background: rgba(244, 122, 102, 0.07);
+        }
+
+        .box--answer {
+            border-color: rgba(0, 219, 194, 0.35);
+            background: rgba(0, 219, 194, 0.06);
+        }
+        .box > p {
+            margin: var(--space-3) 0 0 0;
+        }
+        .hint-card > p {
+            margin: var(--space-2) 0 0 0;
+        }
+
+        .hint-card {
+            background: rgba(255, 188, 125, 0.07);
+            border: 1px solid rgba(255, 188, 125, 0.32);
+            border-radius: 10px;
+            padding: var(--space-4) var(--space-5);
+            margin-top: var(--space-4);
+            font-size: 0.64em;
+            line-height: 1.5;
+            text-align: left;
+        }
+        .hint-card .hint-label {
+            display: inline-block;
+            color: var(--steam-peach);
+            font-weight: 600;
+            margin-bottom: var(--space-1);
+        }
+
+        /* Layout Grids & Lists */
+        .split-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--space-6);
+            align-items: stretch;
+            margin-top: var(--space-4);
+        }
+        .split-grid .box {
+            margin: 0;
+        }
+        .box--flex {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: var(--space-4);
+        }
+
+        .linked-list-svg {
+            display: block;
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            margin: var(--space-4) auto;
+        }
+        .ll-legend {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-5);
+            font-size: 0.42em;
+            color: var(--steam-text-muted);
+            margin-top: var(--space-2);
+        }
+        .ll-legend__item {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        .ll-swatch {
+            display: inline-block;
+            width: 18px;
+            height: 3px;
+            border-radius: 2px;
+        }
+        .ll-swatch--next { background: #38bdf8; }
+        .ll-swatch--prev { background: #f47a66; }
+
+        .feature-list {
+            list-style: none;
+            margin: var(--space-4) 0 0 0 !important;
+            padding: 0 !important;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            font-size: 0.72em;
+            text-align: left;
+        }
+        .feature-list li {
+            background: var(--steam-surface);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 8px;
+            padding: var(--space-3) var(--space-4);
+            line-height: 1.45;
+        }
+
+        .summary-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            margin-top: var(--space-5) !important;
+            font-size: 0.68em;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .slide-lead {
+            font-size: 0.62em;
+            color: var(--steam-text-muted);
+            text-align: left;
+            margin: 0 0 var(--space-4) 0;
+            line-height: 1.45;
+        }
+
+        .diagram-stage {
+            padding: var(--space-2) 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+        .card-title {
+            color: var(--steam-secondary);
+            font-size: 1.05em;
+            font-weight: 600;
+        }
+        .card-desc {
+            color: var(--steam-text-muted);
+            font-size: 0.92em;
+        }
+        .card-example {
+            color: var(--steam-peach);
+            font-size: 0.88em;
+            font-style: italic;
+        }
+
+        .interview-stack {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-5);
+            margin-top: var(--space-4);
+        }
+        .interview-stack .box {
+            margin: 0;
+            font-size: 0.7em;
+        }
+        .answer-reveal {
+            display: block;
+            margin-top: var(--space-3);
+            padding-top: var(--space-3);
+            border-top: 1px solid rgba(255, 188, 125, 0.25);
+        }
+
+        .step-list {
+            margin: var(--space-3) 0 0 0;
+            padding-left: 1.25em;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Interactive BST vs. AVL Race Lab (dark-surface, hardened) */
+        #bst-avl-lab h3 {
+            margin-bottom: var(--space-3);
+        }
+        .lab-shell {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        .tree-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-2) var(--space-4);
+            font-size: 0.39em;
+        }
+        .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--space-2);
+            margin: 0;
+        }
+        .tree-input {
+            width: 195px;
+            min-width: 0;
+            padding: var(--space-2) var(--space-3);
+            border-radius: 6px;
+            border: 1px solid var(--steam-border);
+            background: #0b1120;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-size: 0.92em;
+            line-height: 1.3;
+        }
+        .tree-input::placeholder {
+            color: var(--steam-text-muted);
+        }
+        .tree-input[aria-invalid="true"] {
+            border-color: var(--steam-primary);
+        }
+        .tree-btn {
+            padding: var(--space-2) var(--space-3);
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.9em;
+            line-height: 1.3;
+            white-space: nowrap;
+            transition: transform 0.14s ease-out, filter 0.14s ease-out, opacity 0.14s ease-out;
+        }
+        .tree-btn:hover:not(:disabled) {
+            filter: brightness(1.07);
+        }
+        .tree-btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+        .tree-btn:disabled {
+            opacity: 0.42;
+            cursor: not-allowed;
+        }
+        .tree-btn:focus-visible,
+        .tree-input:focus-visible {
+            outline: 2px solid var(--steam-accent);
+            outline-offset: 2px;
+        }
+        .tree-btn--primary {
+            background-color: var(--steam-accent);
+            color: var(--steam-ink);
+        }
+        .tree-btn--preset {
+            background-color: var(--steam-secondary);
+            color: var(--steam-ink);
+        }
+        .tree-btn--danger {
+            background-color: var(--steam-primary);
+            color: var(--steam-ink);
+        }
+        .tree-btn--traversal {
+            background-color: var(--steam-peach);
+            color: var(--steam-ink);
+        }
+        .tree-btn--ghost {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.24);
+            color: #f4f7fb;
+        }
+        .lab-feedback {
+            font-size: 0.36em;
+            font-family: 'Poppins', sans-serif;
+            text-align: left;
+            padding: var(--space-2) var(--space-3);
+            border-radius: 8px;
+            border: 1px solid rgba(33, 184, 210, 0.24);
+            background: rgba(11, 17, 32, 0.78);
+            color: var(--steam-text-muted);
+            min-height: 2.3em;
+            display: flex;
+            align-items: center;
+            line-height: 1.4;
+        }
+        .lab-feedback--success {
+            border-color: rgba(0, 219, 194, 0.42);
+            color: #d7fff9;
+        }
+        .lab-feedback--warn {
+            border-color: rgba(255, 188, 125, 0.48);
+            color: #ffe8cf;
+        }
+        .lab-feedback--error {
+            border-color: rgba(244, 122, 102, 0.65);
+            color: #ffd7d0;
+        }
+        .race-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--space-4);
+            align-items: stretch;
+        }
+        .race-panel {
+            background: #0b1120;
+            border: 1px solid var(--steam-border);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .race-panel__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(33, 184, 210, 0.2);
+            font-size: 0.36em;
+        }
+        .race-panel__title {
+            color: #f4f7fb;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .race-panel__metrics {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-variant-numeric: tabular-nums;
+            color: var(--steam-text-muted);
+            white-space: nowrap;
+        }
+        .metric-highlight {
+            color: var(--steam-accent);
+            font-weight: 600;
+        }
+        .metric-warn {
+            color: var(--steam-primary);
+            font-weight: 700;
+        }
+        .race-stage {
+            position: relative;
+            width: 100%;
+            height: 290px;
+            background-image: radial-gradient(rgba(33, 184, 210, 0.14) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .race-stage svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .race-traversal {
+            padding: var(--space-2) var(--space-3);
+            border-top: 1px solid rgba(255, 255, 255, 0.09);
+            background: rgba(255, 255, 255, 0.025);
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-variant-numeric: tabular-nums;
+            font-size: 0.34em;
+            color: var(--steam-accent);
+            text-align: left;
+            min-height: 2.3em;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .race-traversal--empty {
+            color: var(--steam-text-muted);
+        }
+
+        /* Offline fallback if Reveal.js CDN is unavailable */
+        body.reveal-offline .reveal {
+            height: auto;
+            overflow: visible;
+            padding: 32px 24px;
+        }
+        body.reveal-offline .reveal .slides {
+            position: static;
+            width: min(960px, 100%);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+        body.reveal-offline .reveal .slides section {
+            display: block;
+            position: static;
+        }
+        body.reveal-offline .reveal .fragment {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: var(--space-4) 0;
+        }
+        .table-wrap table {
+            margin: 0;
+        }
+        .reveal svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .race-stage svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Touch / Coarse-pointer devices (phones, tablets, touch laptops) */
+        @media (pointer: coarse) {
+            .tree-btn,
+            .tree-input {
+                min-height: 44px;
+            }
+            .toolbar-group {
+                gap: var(--space-3);
+            }
+        }
+
+        /* Complementary Resource Links */
+        .resource-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            margin-top: var(--space-8);
+        }
+        .reveal a.resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            border-radius: 8px;
+            border: 1px solid var(--steam-border);
+            background: rgba(11, 17, 32, 0.78);
+            color: #f4f7fb;
+            font-size: 0.46em;
+            font-weight: 600;
+            text-decoration: none;
+            transition: border-color 0.14s ease-out, background-color 0.14s ease-out, transform 0.14s ease-out;
+        }
+        .reveal a.resource-link:hover {
+            color: #ffffff;
+            border-color: var(--steam-accent);
+            background: rgba(0, 219, 194, 0.12);
+            transform: translateY(-1px);
+        }
+        .reveal a.resource-link:focus-visible {
+            outline: 2px solid var(--steam-accent);
+            outline-offset: 3px;
+        }
+        .resource-link__icon {
+            width: 0.95em;
+            height: 0.95em;
+            flex-shrink: 0;
+            color: var(--steam-accent);
+        }
+        .reveal a.inline-ref {
+            color: var(--steam-accent);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            font-weight: 600;
+        }
+        .reveal a.inline-ref:hover {
+            color: var(--steam-peach);
+        }
+        .reveal a.inline-ref:focus-visible {
+            outline: 2px solid var(--steam-accent);
+            outline-offset: 2px;
+            border-radius: 3px;
+        }
+
+        @media (hover: none) {
+            .tree-btn:hover:not(:disabled) {
+                filter: none;
+            }
+            .reveal a.resource-link:hover {
+                transform: none;
+            }
+        }
+
+        /* Native Mobile Mode (<= 768px): disable Reveal pixel scaling, reflow for 1:1 touch & reading */
+        @media (max-width: 768px) {
+            html, body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+            .reveal {
+                font-size: 16px;
+            }
+            .reveal .slides {
+                position: relative !important;
+                width: 100% !important;
+                height: 100% !important;
+                inset: 0 !important;
+                transform: none !important;
+                text-align: left;
+            }
+            .reveal .slides > section,
+            .reveal .slides section > section {
+                position: absolute;
+                top: 0 !important;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                padding: 0;
+            }
+            .reveal .slides section.present:not(.stack) {
+                display: flex !important;
+                flex-direction: column;
+                justify-content: flex-start;
+                overflow-y: auto;
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y;
+                padding: calc(20px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+            }
+            .reveal .slides section.present.slide-cover {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            .reveal h1 {
+                font-size: clamp(1.9rem, 7vw, 2.4rem);
+                margin-bottom: var(--space-3);
+            }
+            .reveal h2 {
+                font-size: clamp(1.5rem, 6vw, 1.9rem);
+                margin-bottom: var(--space-3);
+            }
+            .reveal h3 {
+                font-size: clamp(1.2rem, 5vw, 1.45rem);
+                margin-bottom: var(--space-4);
+            }
+            .reveal .cover-subtitle {
+                font-size: 1.05rem;
+            }
+            .reveal .section-subtitle {
+                font-size: 1rem;
+            }
+            .reveal .box,
+            .reveal .interview-stack .box {
+                font-size: 0.95rem;
+                padding: var(--space-4);
+                margin: var(--space-3) 0;
+            }
+            .reveal .hint-card {
+                font-size: 0.9rem;
+                padding: var(--space-4);
+                margin-top: var(--space-3);
+            }
+            .reveal .feature-list,
+            .reveal .summary-list {
+                font-size: 0.94rem;
+                gap: var(--space-3);
+                margin-top: var(--space-3) !important;
+            }
+            .reveal .slide-lead,
+            .reveal .muted-note,
+            .reveal .ll-legend {
+                font-size: 0.875rem;
+                margin-top: var(--space-3);
+            }
+            .reveal table {
+                font-size: 0.875rem;
+                min-width: 440px;
+            }
+            .reveal td, .reveal th {
+                padding: var(--space-2) var(--space-3);
+            }
+            .reveal pre {
+                margin: var(--space-3) 0;
+            }
+            .reveal pre code {
+                font-size: 13.5px;
+                padding: var(--space-4);
+                max-height: none;
+            }
+            .split-grid,
+            .race-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
+            }
+            #bst-avl-lab h3 {
+                margin-bottom: var(--space-3);
+            }
+            .tree-toolbar {
+                font-size: 1rem;
+                flex-direction: column;
+                align-items: stretch;
+                gap: var(--space-2);
+            }
+            .toolbar-group {
+                width: 100%;
+                gap: var(--space-2);
+            }
+            #tree-insert-form {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            .tree-input {
+                flex: 1 1 auto;
+                width: auto;
+                min-height: 44px;
+                font-size: 16px;
+                padding: var(--space-2) var(--space-3);
+            }
+            .tree-btn {
+                min-height: 44px;
+                font-size: 0.86rem;
+                padding: var(--space-2) var(--space-3);
+                flex: 1 1 auto;
+            }
+            #btn-insert {
+                flex: 0 0 auto;
+                padding: var(--space-2) var(--space-4);
+            }
+            #btn-stop:disabled {
+                display: none;
+            }
+            .lab-feedback {
+                font-size: 0.875rem;
+                padding: var(--space-2) var(--space-3);
+            }
+            .race-panel__header {
+                font-size: 0.875rem;
+                padding: var(--space-2) var(--space-3);
+                flex-wrap: wrap;
+            }
+            .race-stage {
+                height: 205px;
+            }
+            .race-traversal {
+                font-size: 0.85rem;
+                padding: var(--space-2) var(--space-3);
+            }
+            .reveal .controls {
+                bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+                right: calc(12px + env(safe-area-inset-right)) !important;
+            }
+            .resource-links {
+                width: 100%;
+                flex-direction: column;
+                gap: var(--space-3);
+                margin-top: var(--space-6);
+            }
+            .reveal a.resource-link {
+                width: 100%;
+                justify-content: center;
+                min-height: 44px;
+                font-size: 0.95rem;
+                padding: var(--space-3) var(--space-4);
+            }
+        }
+
+        @media (max-width: 768px) and (orientation: landscape) {
+            .race-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .race-stage {
+                height: 190px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .tree-btn,
+            .reveal a.resource-link {
+                transition: none;
+            }
         }
     </style>
 </head>
@@ -60,558 +865,484 @@
     <div class="reveal">
         <div class="slides">
             <!-- Portada -->
-            <section>
+            <section class="slide-cover">
                 <h1>Estructuras de Datos</h1>
-                <h3 class="primary">Sesión de Repaso</h3>
+                <h2 class="cover-subtitle">Sesión de Repaso</h2>
+                <nav class="resource-links" aria-label="Presentaciones complementarias">
+                    <a class="resource-link" href="https://sebastianzapatar.github.io/heapspriorityqueue/" target="_blank" rel="noopener noreferrer">
+                        <span>Heaps y Priority Queue</span>
+                        <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M7 17L17 7M9 7h8v8"/>
+                        </svg>
+                    </a>
+                    <a class="resource-link" href="https://sebastianzapatar.github.io/grafos/" target="_blank" rel="noopener noreferrer">
+                        <span>Grafos</span>
+                        <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M7 17L17 7M9 7h8v8"/>
+                        </svg>
+                    </a>
+                </nav>
             </section>
 
             <!-- 1.1 Estructuras Lineales -->
             <section>
-                <section>
+                <section class="slide-cover">
                     <h2>1.1 Estructuras Lineales</h2>
-                    <p class="primary">¿Cuándo usar cada una?</p>
+                    <p class="section-subtitle">¿Cuándo usar cada una?</p>
                 </section>
                 <section>
                     <h3>Opciones y Usos</h3>
-                    <ul style="font-size: 0.8em;">
+                    <ul class="feature-list">
                         <li><span class="accent">Vector (ArrayList):</span> Acceso aleatorio muy rápido. Útil cuando los datos cambian poco de tamaño o solo crecen al final.</li>
                         <li><span class="accent">Lista Enlazada (LinkedList):</span> Inserciones y eliminaciones frecuentes en cualquier posición (especialmente al inicio).</li>
                         <li><span class="accent">Pila (Stack):</span> Útil para historiales, deshacer/rehacer, o evaluación de expresiones. Se rige por LIFO (Último en entrar, primero en salir).</li>
                         <li><span class="accent">Cola (Queue):</span> Procesamiento por turnos, buffers, o algoritmos como BFS. Se rige por FIFO (Primero en entrar, primero en salir).</li>
-                        <li><span class="accent">Cola de Prioridad:</span> Planificadores de tareas, algoritmo de Dijkstra, o encontrar el elemento máximo/mínimo dinámicamente.</li>
+                        <li><span class="accent">Cola de Prioridad:</span> Planificadores de tareas, algoritmo de Dijkstra, o encontrar el elemento máximo/mínimo dinámicamente. Ver <a class="inline-ref" href="https://sebastianzapatar.github.io/heapspriorityqueue/" target="_blank" rel="noopener noreferrer">Heaps y Priority Queue</a> y <a class="inline-ref" href="https://sebastianzapatar.github.io/grafos/" target="_blank" rel="noopener noreferrer">Grafos</a>.</li>
                     </ul>
                 </section>
                 <section>
                     <h3>Comparativa</h3>
-                    <table>
-                        <tr>
-                            <th>Estructura</th>
-                            <th>Búsqueda</th>
-                            <th>Inserción</th>
-                            <th>Eliminación</th>
-                        </tr>
-                        <tr>
-                            <td>Vector</td>
-                            <td>O(n)</td>
-                            <td>O(n)</td>
-                            <td>O(n)</td>
-                        </tr>
-                        <tr>
-                            <td>Lista Enlazada</td>
-                            <td>O(n)</td>
-                            <td><span class="accent">O(1)</span>*</td>
-                            <td><span class="accent">O(1)</span>*</td>
-                        </tr>
-                        <tr>
-                            <td>Pila / Cola</td>
-                            <td>O(n)</td>
-                            <td><span class="accent">O(1)</span></td>
-                            <td><span class="accent">O(1)</span></td>
-                        </tr>
-                        <tr>
-                            <td>Cola de Prioridad</td>
-                            <td>O(n)</td>
-                            <td><span class="accent">O(log n)</span></td>
-                            <td><span class="accent">O(log n)</span></td>
-                        </tr>
-                    </table>
-                    <p style="font-size: 0.5em; text-align:left;">* Conociendo la referencia al nodo exacto que se va a modificar.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estructura</th>
+                                    <th>Acceso por índice</th>
+                                    <th>Búsqueda</th>
+                                    <th>Inserción</th>
+                                    <th>Eliminación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Vector</td>
+                                    <td><span class="accent">O(1)</span></td>
+                                    <td>O(n)</td>
+                                    <td>O(n)</td>
+                                    <td>O(n)</td>
+                                </tr>
+                                <tr>
+                                    <td>Lista Enlazada</td>
+                                    <td>O(n)</td>
+                                    <td>O(n)</td>
+                                    <td><span class="accent">O(1)</span>*</td>
+                                    <td><span class="accent">O(1)</span>*</td>
+                                </tr>
+                                <tr>
+                                    <td>Pila / Cola</td>
+                                    <td>—</td>
+                                    <td>O(n)</td>
+                                    <td><span class="accent">O(1)</span></td>
+                                    <td><span class="accent">O(1)</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Cola de Prioridad</td>
+                                    <td>—</td>
+                                    <td>O(n)</td>
+                                    <td><span class="accent">O(log n)</span></td>
+                                    <td><span class="accent">O(log n)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="muted-note">* Conociendo la referencia al nodo exacto que se va a modificar.</p>
                 </section>
                 <section>
                     <h3>Profundizando: Pilas y Colas</h3>
-                    <div style="display: flex; justify-content: space-around; font-size: 0.7em;">
-                        <div class="box" style="width: 45%; text-align: center;">
-                            <strong>Pila (Stack) - LIFO</strong><br>
-                            Último en entrar, Primero en salir.<br><br>
-                            <div style="font-size: 1.5em; border: 2px solid var(--steam-secondary); border-top: none; padding: 10px; width: 100px; margin: auto;">
-                                <span>Top -> 🥞</span><br>
-                                <span>🥞</span><br>
-                                <span>🥞</span>
+                    <div class="split-grid">
+                        <div class="box box--flex">
+                            <div class="card-header">
+                                <span class="card-title">Pila (Stack) — LIFO</span>
+                                <span class="card-desc">Último en entrar, primero en salir.</span>
                             </div>
-                            <br><em>Ej: Botón atrás del navegador, recursividad.</em>
+                            <div class="diagram-stage">
+                                <svg viewBox="0 0 280 150" width="280" height="150" role="img" aria-label="Diagrama de Pila LIFO con tres elementos apilados y puntero Top en el superior">
+                                    <!-- Open-top stack vessel -->
+                                    <path d="M 110 26 L 110 132 L 236 132 L 236 26" fill="none" stroke="#21b8d2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <!-- Elements -->
+                                    <rect x="122" y="38" width="102" height="24" rx="5" fill="#00DBC2"/>
+                                    <text x="173" y="54" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" text-anchor="middle">Elemento 3</text>
+                                    <rect x="122" y="68" width="102" height="24" rx="5" fill="rgba(0, 219, 194, 0.22)" stroke="#00DBC2" stroke-width="1.5"/>
+                                    <text x="173" y="84" fill="#f4f7fb" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" text-anchor="middle">Elemento 2</text>
+                                    <rect x="122" y="98" width="102" height="24" rx="5" fill="rgba(0, 219, 194, 0.10)" stroke="rgba(0, 219, 194, 0.65)" stroke-width="1.5"/>
+                                    <text x="173" y="114" fill="#f4f7fb" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" text-anchor="middle">Elemento 1</text>
+                                    <!-- Top pointer -->
+                                    <text x="20" y="54" fill="#f47a66" font-family="Poppins, sans-serif" font-size="14" font-weight="700">TOP</text>
+                                    <line x1="58" y1="50" x2="100" y2="50" stroke="#f47a66" stroke-width="2.5"/>
+                                    <polygon points="100,45 110,50 100,55" fill="#f47a66"/>
+                                    <text x="173" y="16" fill="#FFBC7D" font-family="Poppins, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Push / Pop</text>
+                                </svg>
+                            </div>
+                            <span class="card-example">Ej: Botón atrás del navegador, recursividad.</span>
                         </div>
-                        <div class="box" style="width: 45%; text-align: center;">
-                            <strong>Cola (Queue) - FIFO</strong><br>
-                            Primero en entrar, Primero en salir.<br><br>
-                            <div style="font-size: 1.5em; border: 2px solid var(--steam-secondary); border-left: none; border-right: none; padding: 10px; margin: auto;">
-                                Salida <- 🚶‍♂️ 🚶‍♂️ 🚶‍♂️ <- Entrada
+                        <div class="box box--flex">
+                            <div class="card-header">
+                                <span class="card-title">Cola (Queue) — FIFO</span>
+                                <span class="card-desc">Primero en entrar, primero en salir.</span>
                             </div>
-                            <br><em>Ej: Fila del supermercado, impresión.</em>
+                            <div class="diagram-stage">
+                                <svg viewBox="0 0 320 150" width="320" height="150" role="img" aria-label="Diagrama de Cola FIFO con salida a la izquierda y entrada a la derecha">
+                                    <!-- Open-ended queue channel -->
+                                    <line x1="76" y1="52" x2="244" y2="52" stroke="#21b8d2" stroke-width="2.5" stroke-linecap="round"/>
+                                    <line x1="76" y1="106" x2="244" y2="106" stroke="#21b8d2" stroke-width="2.5" stroke-linecap="round"/>
+                                    <!-- Queue items -->
+                                    <rect x="86" y="64" width="44" height="30" rx="5" fill="#00DBC2"/>
+                                    <text x="108" y="84" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" text-anchor="middle">1°</text>
+                                    <rect x="138" y="64" width="44" height="30" rx="5" fill="rgba(0, 219, 194, 0.22)" stroke="#00DBC2" stroke-width="1.5"/>
+                                    <text x="160" y="84" fill="#f4f7fb" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" text-anchor="middle">2°</text>
+                                    <rect x="190" y="64" width="44" height="30" rx="5" fill="rgba(0, 219, 194, 0.10)" stroke="rgba(0, 219, 194, 0.65)" stroke-width="1.5"/>
+                                    <text x="212" y="84" fill="#f4f7fb" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" text-anchor="middle">3°</text>
+                                    <!-- Dequeue arrow (left) -->
+                                    <line x1="66" y1="79" x2="28" y2="79" stroke="#f47a66" stroke-width="2.5"/>
+                                    <polygon points="28,74 18,79 28,84" fill="#f47a66"/>
+                                    <text x="42" y="40" fill="#f47a66" font-family="Poppins, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Salida</text>
+                                    <!-- Enqueue arrow (right) -->
+                                    <line x1="296" y1="79" x2="258" y2="79" stroke="#FFBC7D" stroke-width="2.5"/>
+                                    <polygon points="258,74 248,79 258,84" fill="#FFBC7D"/>
+                                    <text x="276" y="40" fill="#FFBC7D" font-family="Poppins, sans-serif" font-size="12" font-weight="700" text-anchor="middle">Entrada</text>
+                                    <!-- Labels -->
+                                    <text x="108" y="130" fill="#b8c4e0" font-family="Poppins, sans-serif" font-size="11" text-anchor="middle">Front</text>
+                                    <text x="212" y="130" fill="#b8c4e0" font-family="Poppins, sans-serif" font-size="11" text-anchor="middle">Rear</text>
+                                </svg>
+                            </div>
+                            <span class="card-example">Ej: Fila del supermercado, impresión.</span>
                         </div>
                     </div>
                 </section>
                 <section>
                     <h3>1. Lista Simple</h3>
-                    <p style="font-size: 0.6em; text-align: left;">Nodos apuntan al siguiente. Un solo sentido. Ideal para implementaciones donde el acceso principal es desde la cabeza.</p>
-                    <svg width="600" height="150" style="margin:auto; display:block;">
+                    <p class="slide-lead">Nodos apuntan al siguiente. Un solo sentido. Ideal para implementaciones donde el acceso principal es desde la cabeza.</p>
+                    <svg class="linked-list-svg" viewBox="0 0 640 165" role="img" aria-label="Diagrama de Lista Simple: HEAD apunta al nodo A, A apunta a B, B apunta a C y C apunta a NULL">
+                        <title>Lista Simple: HEAD → A → B → C → NULL</title>
                         <defs>
-                            <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                                <path d="M0,0 L0,6 L9,3 z" fill="#1840F4" />
+                            <marker id="ll1-next" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L9,3.5 z" fill="#38bdf8" />
                             </marker>
-                            <marker id="arrow-peach" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                                <path d="M0,0 L0,6 L9,3 z" fill="#ec6551" />
+                            <marker id="ll1-head" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L8,3.5 z" fill="#FFBC7D" />
                             </marker>
                         </defs>
-                        <!-- Node 1 -->
-                        <g transform="translate(50, 50)">
-                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
-                            <circle cx="50" cy="20" r="3" fill="black"/>
-                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <!-- HEAD pointer -->
+                        <text x="90" y="24" fill="#FFBC7D" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" text-anchor="middle">HEAD</text>
+                        <line x1="90" y1="32" x2="90" y2="56" stroke="#FFBC7D" stroke-width="2.5" marker-end="url(#ll1-head)"/>
+
+                        <!-- Node A -->
+                        <g transform="translate(50, 68)">
+                            <rect width="84" height="44" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <path d="M6,0 H52 V44 H6 Q0,44 0,38 V6 Q0,0 6,0 Z" fill="#00DBC2"/>
+                            <text x="26" y="22" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">A</text>
+                            <circle cx="68" cy="22" r="4" fill="#38bdf8"/>
                         </g>
-                        <!-- Node 2 -->
-                        <g transform="translate(190, 50)">
-                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
-                            <circle cx="50" cy="20" r="3" fill="black"/>
-                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <line x1="122" y1="90" x2="196" y2="90" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll1-next)"/>
+
+                        <!-- Node B -->
+                        <g transform="translate(206, 68)">
+                            <rect width="84" height="44" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <path d="M6,0 H52 V44 H6 Q0,44 0,38 V6 Q0,0 6,0 Z" fill="#00DBC2"/>
+                            <text x="26" y="22" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">B</text>
+                            <circle cx="68" cy="22" r="4" fill="#38bdf8"/>
                         </g>
-                        <!-- Node 3 -->
-                        <g transform="translate(330, 50)">
-                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
-                            <circle cx="50" cy="20" r="3" fill="black"/>
-                            <line x1="50" y1="20" x2="110" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <line x1="278" y1="90" x2="352" y2="90" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll1-next)"/>
+
+                        <!-- Node C -->
+                        <g transform="translate(362, 68)">
+                            <rect width="84" height="44" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <path d="M6,0 H52 V44 H6 Q0,44 0,38 V6 Q0,0 6,0 Z" fill="#00DBC2"/>
+                            <text x="26" y="22" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">C</text>
+                            <circle cx="68" cy="22" r="4" fill="#38bdf8"/>
                         </g>
+                        <line x1="434" y1="90" x2="508" y2="90" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll1-next)"/>
+
                         <!-- NULL -->
-                        <text x="450" y="75" fill="white" font-weight="bold">NULL</text>
+                        <rect x="520" y="72" width="70" height="36" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(184,196,224,0.4)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <text x="555" y="90" fill="#b8c4e0" font-family="JetBrains Mono, monospace" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="central">NULL</text>
                     </svg>
                 </section>
                 <section>
                     <h3>2. Lista Circular Simple</h3>
-                    <p style="font-size: 0.6em; text-align: left;">El último nodo apunta de nuevo a la cabeza. Muy útil para algoritmos de planificación o buffers.</p>
-                    <svg width="600" height="180" style="margin:auto; display:block;">
-                        <!-- Node 1 -->
-                        <g transform="translate(50, 50)">
-                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
-                            <circle cx="50" cy="20" r="3" fill="black"/>
-                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                    <p class="slide-lead">El último nodo apunta de nuevo a la cabeza. Muy útil para algoritmos de planificación o buffers.</p>
+                    <svg class="linked-list-svg" viewBox="0 0 640 188" role="img" aria-label="Diagrama de Lista Circular Simple: A apunta a B, B apunta a C y C vuelve a apuntar a HEAD A">
+                        <title>Lista Circular Simple: A → B → C → A</title>
+                        <defs>
+                            <marker id="ll2-next" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L9,3.5 z" fill="#38bdf8" />
+                            </marker>
+                            <marker id="ll2-head" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L8,3.5 z" fill="#FFBC7D" />
+                            </marker>
+                        </defs>
+                        <!-- HEAD pointer -->
+                        <text x="122" y="24" fill="#FFBC7D" font-family="JetBrains Mono, monospace" font-size="14" font-weight="700" text-anchor="middle">HEAD</text>
+                        <line x1="122" y1="32" x2="122" y2="56" stroke="#FFBC7D" stroke-width="2.5" marker-end="url(#ll2-head)"/>
+
+                        <!-- Node A -->
+                        <g transform="translate(80, 68)">
+                            <rect width="84" height="44" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <path d="M6,0 H52 V44 H6 Q0,44 0,38 V6 Q0,0 6,0 Z" fill="#00DBC2"/>
+                            <text x="26" y="22" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">A</text>
+                            <circle cx="68" cy="22" r="4" fill="#38bdf8"/>
                         </g>
-                        <!-- Node 2 -->
-                        <g transform="translate(190, 50)">
-                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
-                            <circle cx="50" cy="20" r="3" fill="black"/>
-                            <line x1="50" y1="20" x2="130" y2="20" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <line x1="152" y1="90" x2="266" y2="90" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll2-next)"/>
+
+                        <!-- Node B -->
+                        <g transform="translate(278, 68)">
+                            <rect width="84" height="44" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <path d="M6,0 H52 V44 H6 Q0,44 0,38 V6 Q0,0 6,0 Z" fill="#00DBC2"/>
+                            <text x="26" y="22" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">B</text>
+                            <circle cx="68" cy="22" r="4" fill="#38bdf8"/>
                         </g>
-                        <!-- Node 3 -->
-                        <g transform="translate(330, 50)">
-                            <rect width="60" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="40" y1="0" x2="40" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="20" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
-                            <circle cx="50" cy="20" r="3" fill="black"/>
+                        <line x1="350" y1="90" x2="464" y2="90" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll2-next)"/>
+
+                        <!-- Node C -->
+                        <g transform="translate(476, 68)">
+                            <rect width="84" height="44" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <path d="M6,0 H52 V44 H6 Q0,44 0,38 V6 Q0,0 6,0 Z" fill="#00DBC2"/>
+                            <text x="26" y="22" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">C</text>
+                            <circle cx="68" cy="22" r="4" fill="#38bdf8"/>
                         </g>
-                        <!-- Back arrow -->
-                        <path d="M 380 90 L 380 140 L 70 140 L 70 95" fill="none" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
+
+                        <!-- Circular back arrow -->
+                        <path d="M 544 94 L 544 162 Q 544 172 534 172 L 132 172 Q 122 172 122 162 L 122 122" fill="none" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll2-next)"/>
                     </svg>
+                    <div class="ll-legend">
+                        <span class="ll-legend__item"><span class="ll-swatch ll-swatch--next"></span> <code>cola.siguiente → HEAD (A)</code></span>
+                    </div>
                 </section>
                 <section>
                     <h3>3. Lista Doblemente Ligada</h3>
-                    <p style="font-size: 0.6em; text-align: left;">Nodos apuntan al siguiente y al anterior. Permite iterar y borrar eficientemente en ambas direcciones.</p>
-                    <svg width="680" height="150" style="margin:auto; display:block;">
-                        <!-- Node 1 -->
-                        <g transform="translate(100, 50)">
-                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
-                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
-                            <circle cx="75" cy="20" r="3" fill="black"/>
-                            <circle cx="15" cy="20" r="3" fill="black"/>
-                        </g>
-                        <!-- Node 2 -->
-                        <g transform="translate(280, 50)">
-                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
-                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
-                            <circle cx="75" cy="20" r="3" fill="black"/>
-                            <circle cx="15" cy="20" r="3" fill="black"/>
-                        </g>
-                        <!-- Node 3 -->
-                        <g transform="translate(460, 50)">
-                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
-                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
-                            <circle cx="75" cy="20" r="3" fill="black"/>
-                            <circle cx="15" cy="20" r="3" fill="black"/>
+                    <p class="slide-lead">Nodos apuntan al siguiente y al anterior. Permite iterar y borrar eficientemente en ambas direcciones.</p>
+                    <svg class="linked-list-svg" viewBox="0 0 720 175" role="img" aria-label="Diagrama de Lista Doblemente Ligada: NULL hacia A, A y B y C enlazados bidireccionalmente con punteros siguiente y anterior, y C apunta a NULL">
+                        <title>Lista Doblemente Ligada: NULL ← A ⇄ B ⇄ C → NULL</title>
+                        <defs>
+                            <marker id="ll3-next" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L9,3.5 z" fill="#38bdf8" />
+                            </marker>
+                            <marker id="ll3-prev" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L9,3.5 z" fill="#f47a66" />
+                            </marker>
+                            <marker id="ll3-head" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L8,3.5 z" fill="#FFBC7D" />
+                            </marker>
+                        </defs>
+                        <!-- HEAD -->
+                        <text x="180" y="24" fill="#FFBC7D" font-family="JetBrains Mono, monospace" font-size="13" font-weight="700" text-anchor="middle">HEAD</text>
+                        <line x1="180" y1="32" x2="180" y2="58" stroke="#FFBC7D" stroke-width="2.5" marker-end="url(#ll3-head)"/>
+
+                        <!-- Left NULL -->
+                        <rect x="14" y="76" width="66" height="36" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(184,196,224,0.4)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <text x="47" y="94" fill="#b8c4e0" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600" text-anchor="middle" dominant-baseline="central">NULL</text>
+
+                        <!-- Node A -->
+                        <g transform="translate(130, 70)">
+                            <rect width="100" height="46" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <rect x="28" y="0" width="44" height="46" fill="#00DBC2"/>
+                            <text x="50" y="23" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">A</text>
+                            <circle cx="14" cy="30" r="4" fill="#f47a66"/>
+                            <circle cx="86" cy="16" r="4" fill="#38bdf8"/>
                         </g>
 
-                        <!-- Next Pointers -->
-                        <line x1="175" y1="60" x2="270" y2="60" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
-                        <line x1="355" y1="60" x2="450" y2="60" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
-                        <!-- Prev Pointers -->
-                        <line x1="295" y1="80" x2="200" y2="80" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
-                        <line x1="475" y1="80" x2="380" y2="80" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+                        <!-- Node B -->
+                        <g transform="translate(310, 70)">
+                            <rect width="100" height="46" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <rect x="28" y="0" width="44" height="46" fill="#00DBC2"/>
+                            <text x="50" y="23" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">B</text>
+                            <circle cx="14" cy="30" r="4" fill="#f47a66"/>
+                            <circle cx="86" cy="16" r="4" fill="#38bdf8"/>
+                        </g>
 
-                        <!-- NULLs -->
-                        <line x1="535" y1="60" x2="590" y2="60" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
-                        <text x="600" y="65" fill="white" font-weight="bold">NULL</text>
+                        <!-- Node C -->
+                        <g transform="translate(490, 70)">
+                            <rect width="100" height="46" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <rect x="28" y="0" width="44" height="46" fill="#00DBC2"/>
+                            <text x="50" y="23" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">C</text>
+                            <circle cx="14" cy="30" r="4" fill="#f47a66"/>
+                            <circle cx="86" cy="16" r="4" fill="#38bdf8"/>
+                        </g>
 
-                        <line x1="115" y1="80" x2="60" y2="80" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
-                        <text x="10" y="85" fill="white" font-weight="bold">NULL</text>
+                        <!-- Right NULL -->
+                        <rect x="640" y="76" width="66" height="36" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(184,196,224,0.4)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <text x="673" y="94" fill="#b8c4e0" font-family="JetBrains Mono, monospace" font-size="14" font-weight="600" text-anchor="middle" dominant-baseline="central">NULL</text>
+
+                        <!-- Next Pointers (Cyan) -->
+                        <line x1="220" y1="86" x2="300" y2="86" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll3-next)"/>
+                        <line x1="400" y1="86" x2="480" y2="86" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll3-next)"/>
+                        <line x1="580" y1="86" x2="630" y2="86" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll3-next)"/>
+
+                        <!-- Prev Pointers (Coral) -->
+                        <line x1="320" y1="100" x2="240" y2="100" stroke="#f47a66" stroke-width="2.75" marker-end="url(#ll3-prev)"/>
+                        <line x1="500" y1="100" x2="420" y2="100" stroke="#f47a66" stroke-width="2.75" marker-end="url(#ll3-prev)"/>
+                        <line x1="140" y1="100" x2="90" y2="100" stroke="#f47a66" stroke-width="2.75" marker-end="url(#ll3-prev)"/>
                     </svg>
+                    <div class="ll-legend">
+                        <span class="ll-legend__item"><span class="ll-swatch ll-swatch--next"></span> siguiente</span>
+                        <span class="ll-legend__item"><span class="ll-swatch ll-swatch--prev"></span> anterior</span>
+                    </div>
                 </section>
                 <section>
                     <h3>4. Lista Doble Circular</h3>
-                    <p style="font-size: 0.6em; text-align: left;">Máxima flexibilidad. La cabeza y la cola están conectadas en ambas direcciones.</p>
-                    <svg width="680" height="200" style="margin:auto; display:block;">
-                        <!-- Node 1 -->
-                        <g transform="translate(100, 70)">
-                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
-                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">A</text>
-                            <circle cx="75" cy="20" r="3" fill="black"/>
-                            <circle cx="15" cy="20" r="3" fill="black"/>
-                        </g>
-                        <!-- Node 2 -->
-                        <g transform="translate(280, 70)">
-                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
-                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">B</text>
-                            <circle cx="75" cy="20" r="3" fill="black"/>
-                            <circle cx="15" cy="20" r="3" fill="black"/>
-                        </g>
-                        <!-- Node 3 -->
-                        <g transform="translate(460, 70)">
-                            <rect width="90" height="40" fill="#00DBC2" stroke="white" stroke-width="2"/>
-                            <line x1="30" y1="0" x2="30" y2="40" stroke="white" stroke-width="2"/>
-                            <line x1="60" y1="0" x2="60" y2="40" stroke="white" stroke-width="2"/>
-                            <text x="45" y="25" fill="black" font-weight="bold" text-anchor="middle">C</text>
-                            <circle cx="75" cy="20" r="3" fill="black"/>
-                            <circle cx="15" cy="20" r="3" fill="black"/>
+                    <p class="slide-lead">Máxima flexibilidad. La cabeza y la cola están conectadas en ambas direcciones.</p>
+                    <svg class="linked-list-svg" viewBox="0 0 720 198" role="img" aria-label="Diagrama de Lista Doble Circular: A, B y C enlazados en ambas direcciones con enlace circular de C hacia A y de A hacia C">
+                        <title>Lista Doble Circular: A ⇄ B ⇄ C ⇄ A</title>
+                        <defs>
+                            <marker id="ll4-next" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L9,3.5 z" fill="#38bdf8" />
+                            </marker>
+                            <marker id="ll4-prev" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,7 L9,3.5 z" fill="#f47a66" />
+                            </marker>
+                        </defs>
+                        <!-- Node A -->
+                        <g transform="translate(130, 76)">
+                            <rect width="100" height="46" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <rect x="28" y="0" width="44" height="46" fill="#00DBC2"/>
+                            <text x="50" y="23" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">A</text>
+                            <circle cx="14" cy="30" r="4" fill="#f47a66"/>
+                            <circle cx="86" cy="16" r="4" fill="#38bdf8"/>
                         </g>
 
-                        <!-- Next Pointers -->
-                        <line x1="175" y1="80" x2="270" y2="80" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
-                        <line x1="355" y1="80" x2="450" y2="80" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
-                        <!-- Prev Pointers -->
-                        <line x1="295" y1="100" x2="200" y2="100" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
-                        <line x1="475" y1="100" x2="380" y2="100" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+                        <!-- Node B -->
+                        <g transform="translate(310, 76)">
+                            <rect width="100" height="46" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <rect x="28" y="0" width="44" height="46" fill="#00DBC2"/>
+                            <text x="50" y="23" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">B</text>
+                            <circle cx="14" cy="30" r="4" fill="#f47a66"/>
+                            <circle cx="86" cy="16" r="4" fill="#38bdf8"/>
+                        </g>
 
-                        <!-- Circular Next (Blue) -->
-                        <path d="M 535 80 L 580 80 L 580 20 L 145 20 L 145 65" fill="none" stroke="#1840F4" stroke-width="3" marker-end="url(#arrow-blue)"/>
-                        
-                        <!-- Circular Prev (Peach) -->
-                        <path d="M 115 100 L 70 100 L 70 160 L 505 160 L 505 115" fill="none" stroke="#ec6551" stroke-width="3" marker-end="url(#arrow-peach)"/>
+                        <!-- Node C -->
+                        <g transform="translate(490, 76)">
+                            <rect width="100" height="46" rx="6" fill="#0b1120" stroke="#00DBC2" stroke-width="2"/>
+                            <rect x="28" y="0" width="44" height="46" fill="#00DBC2"/>
+                            <text x="50" y="23" fill="#0d1117" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">C</text>
+                            <circle cx="14" cy="30" r="4" fill="#f47a66"/>
+                            <circle cx="86" cy="16" r="4" fill="#38bdf8"/>
+                        </g>
+
+                        <!-- Next Pointers (Cyan) -->
+                        <line x1="220" y1="92" x2="300" y2="92" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll4-next)"/>
+                        <line x1="400" y1="92" x2="480" y2="92" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll4-next)"/>
+
+                        <!-- Prev Pointers (Coral) -->
+                        <line x1="320" y1="106" x2="240" y2="106" stroke="#f47a66" stroke-width="2.75" marker-end="url(#ll4-prev)"/>
+                        <line x1="500" y1="106" x2="420" y2="106" stroke="#f47a66" stroke-width="2.75" marker-end="url(#ll4-prev)"/>
+
+                        <!-- Circular Next (Top Cyan: C -> A) -->
+                        <path d="M 580 92 L 642 92 Q 652 92 652 82 L 652 26 Q 652 16 642 16 L 190 16 Q 180 16 180 26 L 180 66" fill="none" stroke="#38bdf8" stroke-width="2.75" marker-end="url(#ll4-next)"/>
+
+                        <!-- Circular Prev (Bottom Coral: A -> C) -->
+                        <path d="M 140 106 L 78 106 Q 68 106 68 116 L 68 172 Q 68 182 78 182 L 530 182 Q 540 182 540 172 L 540 132" fill="none" stroke="#f47a66" stroke-width="2.75" marker-end="url(#ll4-prev)"/>
                     </svg>
+                    <div class="ll-legend">
+                        <span class="ll-legend__item"><span class="ll-swatch ll-swatch--next"></span> <code>cola.siguiente → HEAD (A)</code></span>
+                        <span class="ll-legend__item"><span class="ll-swatch ll-swatch--prev"></span> <code>HEAD.anterior → cola (C)</code></span>
+                    </div>
                 </section>
                 <section>
                     <h3>Reto LeetCode (Listas)</h3>
-                    <div class="box">
-                        <strong>Linked List Cycle (Fácil) - LC 141</strong><br>
-                        Dada la cabeza de una lista enlazada, determina si tiene un ciclo en su interior.
+                    <div class="box box--warm">
+                        <strong>Linked List Cycle (Fácil) — LC 141</strong>
+                        <p>Dada la cabeza de una lista enlazada, determina si tiene un ciclo en su interior.</p>
                     </div>
-                    <ul style="font-size: 0.7em;">
-                        <li><em>Pista (Floyd's Algorithm):</em> Usa el concepto de "Liebre y Tortuga" (dos punteros, uno avanza rápido saltando de a 2, y otro lento de a 1). Si alguna vez se encuentran, hay un ciclo. (Tiempo: O(n), Memoria: O(1)).</li>
-                    </ul>
+                    <div class="fragment hint-card">
+                        <span class="hint-label">Pista (Floyd's Algorithm):</span>
+                        <p>Usa el concepto de "Liebre y Tortuga" (dos punteros, uno avanza rápido saltando de a 2, y otro lento de a 1). Si alguna vez se encuentran, hay un ciclo. (Tiempo: <code>O(n)</code>, Memoria: <code>O(1)</code>).</p>
+                    </div>
                 </section>
             </section>
 
             <!-- 1.2 Repaso de árboles -->
             <section>
-                <section>
+                <section class="slide-cover">
                     <h2>1.2 Árboles</h2>
-                    <p class="primary">Operaciones Clave</p>
+                    <p class="section-subtitle">Operaciones Clave</p>
                 </section>
                 <section>
                     <h3>Complejidad en Árboles (BST)</h3>
-                    <table>
-                        <tr>
-                            <th>Estructura</th>
-                            <th>Búsqueda</th>
-                            <th>Inserción</th>
-                            <th>Eliminación</th>
-                        </tr>
-                        <tr>
-                            <td>BST Equilibrado (AVL, Rojo-Negro)</td>
-                            <td><span class="accent">O(log n)</span></td>
-                            <td><span class="accent">O(log n)</span></td>
-                            <td><span class="accent">O(log n)</span></td>
-                        </tr>
-                        <tr>
-                            <td>BST Desbalanceado (Peor caso)</td>
-                            <td>O(n)</td>
-                            <td>O(n)</td>
-                            <td>O(n)</td>
-                        </tr>
-                    </table>
-                    <ul style="font-size: 0.7em; margin-top: 20px;">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estructura</th>
+                                    <th>Búsqueda</th>
+                                    <th>Inserción</th>
+                                    <th>Eliminación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>BST Equilibrado (AVL, Rojo-Negro)</td>
+                                    <td><span class="accent">O(log n)</span></td>
+                                    <td><span class="accent">O(log n)</span></td>
+                                    <td><span class="accent">O(log n)</span></td>
+                                </tr>
+                                <tr>
+                                    <td>BST Desbalanceado (Peor caso)</td>
+                                    <td>O(n)</td>
+                                    <td>O(n)</td>
+                                    <td>O(n)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul class="summary-list">
                         <li><span class="peach">Recorridos (O(n)):</span> Inorden (imprime ordenado), Preorden (copiar), Postorden (borrar).</li>
-                        <li><span class="peach">Altura y Hojas (O(n)):</span> Calculadas mediante recursividad (e.g. 1 + max(alturaIzq, alturaDer)).</li>
+                        <li><span class="peach">Altura y Hojas (O(n)):</span> Calculadas mediante recursividad (e.g. <code>1 + max(alturaIzq, alturaDer)</code>).</li>
                     </ul>
                 </section>
-                <section>
-                    <h3>Árbol Binario (BST Normal)</h3>
-                    <div style="font-size: 0.5em; margin-bottom: 5px;">
-                        <input type="number" id="nodeValueBST" placeholder="Valor" style="padding: 5px; border-radius: 5px;">
-                        <button onclick="insertNodeBST()" style="background-color: var(--steam-accent); color: black; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Insertar Nodo</button>
-                        <button onclick="resetTreeBST()" style="background-color: var(--steam-primary); color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Reiniciar</button>
-                        <span style="margin: 0 10px;">|</span>
-                        <button onclick="animateTraversal('bst', 'pre')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Preorden</button>
-                        <button onclick="animateTraversal('bst', 'in')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Inorden</button>
-                        <button onclick="animateTraversal('bst', 'post')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Postorden</button>
+                <section id="bst-avl-lab">
+                    <h3>Carrera BST vs. AVL</h3>
+                    <div class="lab-shell">
+                        <div class="tree-toolbar">
+                            <form id="tree-insert-form" class="toolbar-group" novalidate>
+                                <label for="tree-node-input" class="sr-only">Valor o lista de enteros separados por comas</label>
+                                <input type="text" inputmode="text" id="tree-node-input" class="tree-input" placeholder="Ej: 25 o 10,20,30" autocomplete="off" aria-describedby="lab-feedback">
+                                <button type="submit" id="btn-insert" class="tree-btn tree-btn--primary">Insertar</button>
+                            </form>
+                            <div class="toolbar-group">
+                                <button type="button" id="btn-preset-sorted" class="tree-btn tree-btn--preset">Demo: 10..60</button>
+                                <button type="button" id="btn-preset-double" class="tree-btn tree-btn--preset">Demo: Doble Rot.</button>
+                                <button type="button" id="btn-reset" class="tree-btn tree-btn--danger" disabled>Reiniciar</button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button type="button" data-traversal="pre" class="tree-btn tree-btn--traversal" disabled>Preorden</button>
+                                <button type="button" data-traversal="in" class="tree-btn tree-btn--traversal" disabled>Inorden</button>
+                                <button type="button" data-traversal="post" class="tree-btn tree-btn--traversal" disabled>Postorden</button>
+                                <button type="button" id="btn-stop" class="tree-btn tree-btn--ghost" disabled>Detener</button>
+                            </div>
+                        </div>
+                        <div id="lab-feedback" class="lab-feedback" role="status" aria-live="polite">
+                            Inserta enteros (ej. 25 o 10,20,30) o pulsa una Demo para comparar BST vs. AVL.
+                        </div>
+                        <div class="race-grid">
+                            <div class="race-panel">
+                                <div class="race-panel__header">
+                                    <span class="race-panel__title">BST Normal</span>
+                                    <div class="race-panel__metrics">
+                                        <span id="bst-nodes-metric">Nodos: 0</span>
+                                        <span id="bst-height-metric">Altura: 0</span>
+                                    </div>
+                                </div>
+                                <div class="race-stage">
+                                    <svg id="tree-svg-bst" role="img" aria-label="Árbol Binario de Búsqueda vacío" preserveAspectRatio="xMidYMid meet"></svg>
+                                </div>
+                                <div id="traversal-result-bst" class="race-traversal race-traversal--empty">Recorrido BST: —</div>
+                            </div>
+                            <div class="race-panel">
+                                <div class="race-panel__header">
+                                    <span class="race-panel__title">Árbol AVL</span>
+                                    <div class="race-panel__metrics">
+                                        <span id="avl-nodes-metric">Nodos: 0</span>
+                                        <span id="avl-height-metric">Altura: 0</span>
+                                        <span id="avl-rotations-metric">Rot: 0</span>
+                                    </div>
+                                </div>
+                                <div class="race-stage">
+                                    <svg id="tree-svg-avl" role="img" aria-label="Árbol AVL vacío" preserveAspectRatio="xMidYMid meet"></svg>
+                                </div>
+                                <div id="traversal-result-avl" class="race-traversal race-traversal--empty">Recorrido AVL: —</div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="traversal-result-bst" style="font-size: 0.6em; color: var(--steam-accent); font-weight: bold; min-height: 20px; margin-bottom: 5px;"></div>
-                    <div style="background-color: white; border-radius: 10px; width: 100%; height: 350px; overflow: hidden; position: relative;">
-                        <svg id="tree-svg-bst" width="100%" height="100%" style="position: absolute; top: 0; left: 0;"></svg>
-                    </div>
-                </section>
-                <section>
-                    <h3>Árbol AVL (Auto-balanceado)</h3>
-                    <div style="font-size: 0.5em; margin-bottom: 5px;">
-                        <input type="number" id="nodeValueAVL" placeholder="Valor" style="padding: 5px; border-radius: 5px;">
-                        <button onclick="insertNodeAVL()" style="background-color: var(--steam-accent); color: black; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Insertar Nodo</button>
-                        <button onclick="resetTreeAVL()" style="background-color: var(--steam-primary); color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Reiniciar</button>
-                        <span style="margin: 0 10px;">|</span>
-                        <button onclick="animateTraversal('avl', 'pre')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Preorden</button>
-                        <button onclick="animateTraversal('avl', 'in')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Inorden</button>
-                        <button onclick="animateTraversal('avl', 'post')" style="background-color: #FFBC7D; color: black; padding: 5px 10px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold;">Postorden</button>
-                    </div>
-                    <div id="traversal-result-avl" style="font-size: 0.6em; color: var(--steam-accent); font-weight: bold; min-height: 20px; margin-bottom: 5px;"></div>
-                    <div style="background-color: white; border-radius: 10px; width: 100%; height: 350px; overflow: hidden; position: relative;">
-                        <svg id="tree-svg-avl" width="100%" height="100%" style="position: absolute; top: 0; left: 0;"></svg>
-                    </div>
-                    
-                    <script>
-                        // ================= BST =================
-                        let bstRootObj = null;
-
-                        class TreeNodeBase {
-                            constructor(val) {
-                                this.val = val;
-                                this.left = null;
-                                this.right = null;
-                                this.height = 1;
-                            }
-                        }
-
-                        function insertNodeBST() {
-                            const val = parseInt(document.getElementById('nodeValueBST').value);
-                            if (isNaN(val)) return;
-                            bstRootObj = insertIntoSimpleBST(bstRootObj, val);
-                            renderTreeGeneric('tree-svg-bst', bstRootObj, 'bst');
-                            document.getElementById('nodeValueBST').value = '';
-                            document.getElementById('traversal-result-bst').innerText = '';
-                        }
-                        
-                        function resetTreeBST() {
-                            bstRootObj = null;
-                            renderTreeGeneric('tree-svg-bst', bstRootObj, 'bst');
-                            document.getElementById('traversal-result-bst').innerText = '';
-                        }
-
-                        function insertIntoSimpleBST(root, val) {
-                            if (root === null) return new TreeNodeBase(val);
-                            if (val < root.val) root.left = insertIntoSimpleBST(root.left, val);
-                            else if (val > root.val) root.right = insertIntoSimpleBST(root.right, val);
-                            return root;
-                        }
-
-                        // ================= AVL =================
-                        let avlRootObj = null;
-
-                        function insertNodeAVL() {
-                            const val = parseInt(document.getElementById('nodeValueAVL').value);
-                            if (isNaN(val)) return;
-                            avlRootObj = insertIntoAVL(avlRootObj, val);
-                            renderTreeGeneric('tree-svg-avl', avlRootObj, 'avl');
-                            document.getElementById('nodeValueAVL').value = '';
-                            document.getElementById('traversal-result-avl').innerText = '';
-                        }
-                        
-                        function resetTreeAVL() {
-                            avlRootObj = null;
-                            renderTreeGeneric('tree-svg-avl', avlRootObj, 'avl');
-                            document.getElementById('traversal-result-avl').innerText = '';
-                        }
-
-                        function getHeight(node) {
-                            if (!node) return 0;
-                            return node.height;
-                        }
-
-                        function getBalance(node) {
-                            if (!node) return 0;
-                            return getHeight(node.left) - getHeight(node.right);
-                        }
-
-                        function rightRotate(y) {
-                            let x = y.left;
-                            let T2 = x.right;
-                            x.right = y;
-                            y.left = T2;
-                            y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
-                            x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
-                            return x;
-                        }
-
-                        function leftRotate(x) {
-                            let y = x.right;
-                            let T2 = y.left;
-                            y.left = x;
-                            x.right = T2;
-                            x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
-                            y.height = Math.max(getHeight(y.left), getHeight(y.right)) + 1;
-                            return y;
-                        }
-
-                        function insertIntoAVL(node, val) {
-                            if (node === null) return new TreeNodeBase(val);
-                            if (val < node.val) node.left = insertIntoAVL(node.left, val);
-                            else if (val > node.val) node.right = insertIntoAVL(node.right, val);
-                            else return node; // No duplicates allowed
-
-                            node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
-                            let balance = getBalance(node);
-
-                            if (balance > 1 && val < node.left.val) return rightRotate(node);
-                            if (balance < -1 && val > node.right.val) return leftRotate(node);
-                            if (balance > 1 && val > node.left.val) {
-                                node.left = leftRotate(node.left);
-                                return rightRotate(node);
-                            }
-                            if (balance < -1 && val < node.right.val) {
-                                node.right = rightRotate(node.right);
-                                return leftRotate(node);
-                            }
-                            return node;
-                        }
-
-                        // ================= ANIMACIONES DE RECORRIDOS =================
-                        let isAnimating = false;
-
-                        function getPreorder(node, arr) {
-                            if (!node) return;
-                            arr.push(node.val);
-                            getPreorder(node.left, arr);
-                            getPreorder(node.right, arr);
-                        }
-                        
-                        function getInorder(node, arr) {
-                            if (!node) return;
-                            getInorder(node.left, arr);
-                            arr.push(node.val);
-                            getInorder(node.right, arr);
-                        }
-                        
-                        function getPostorder(node, arr) {
-                            if (!node) return;
-                            getPostorder(node.left, arr);
-                            getPostorder(node.right, arr);
-                            arr.push(node.val);
-                        }
-
-                        async function animateTraversal(treeType, traversalType) {
-                            if (isAnimating) return; // Prevent concurrent animations
-                            
-                            const rootNode = treeType === 'bst' ? bstRootObj : avlRootObj;
-                            if (!rootNode) return;
-                            
-                            isAnimating = true;
-                            const resultDiv = document.getElementById('traversal-result-' + treeType);
-                            resultDiv.innerText = (traversalType.toUpperCase()) + ': ';
-                            
-                            let sequence = [];
-                            if (traversalType === 'pre') getPreorder(rootNode, sequence);
-                            if (traversalType === 'in') getInorder(rootNode, sequence);
-                            if (traversalType === 'post') getPostorder(rootNode, sequence);
-
-                            let currentResult = [];
-                            for (let val of sequence) {
-                                const circleId = 'circle-' + treeType + '-' + val;
-                                const circle = document.getElementById(circleId);
-                                
-                                // Highlight
-                                if(circle) circle.setAttribute('fill', '#ec6551'); // Primary color (red/orange)
-                                
-                                await new Promise(r => setTimeout(r, 800)); // Delay
-                                
-                                // Return to normal and append to result
-                                if(circle) circle.setAttribute('fill', '#00DBC2'); // Accent color (cyan)
-                                currentResult.push(val);
-                                resultDiv.innerText = (traversalType.toUpperCase()) + ': ' + currentResult.join('   ➔   ');
-                            }
-                            
-                            isAnimating = false;
-                        }
-
-                        // ================= RENDERIZADO GENERICO =================
-                        function renderTreeGeneric(svgId, rootNode, typePrefix) {
-                            const svg = document.getElementById(svgId);
-                            svg.innerHTML = '';
-                            if (rootNode !== null) {
-                                drawNodeGeneric(svg, rootNode, svg.clientWidth / 2, 40, svg.clientWidth / 4, 0, typePrefix);
-                            }
-                        }
-
-                        function drawNodeGeneric(svg, node, x, y, offsetX, level, typePrefix) {
-                            const radius = 20;
-                            const levelHeight = 60;
-
-                            if (node.left !== null) {
-                                const nextX = x - offsetX;
-                                const nextY = y + levelHeight;
-                                drawLineGeneric(svg, x, y, nextX, nextY);
-                                drawNodeGeneric(svg, node.left, nextX, nextY, offsetX / 1.5, level + 1, typePrefix);
-                            }
-                            
-                            if (node.right !== null) {
-                                const nextX = x + offsetX;
-                                const nextY = y + levelHeight;
-                                drawLineGeneric(svg, x, y, nextX, nextY);
-                                drawNodeGeneric(svg, node.right, nextX, nextY, offsetX / 1.5, level + 1, typePrefix);
-                            }
-
-                            drawCircleGeneric(svg, x, y, radius, node.val, typePrefix);
-                        }
-
-                        function drawLineGeneric(svg, x1, y1, x2, y2) {
-                            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                            line.setAttribute('x1', x1);
-                            line.setAttribute('y1', y1);
-                            line.setAttribute('x2', x2);
-                            line.setAttribute('y2', y2);
-                            line.setAttribute('stroke', '#1840F4');
-                            line.setAttribute('stroke-width', '3');
-                            svg.appendChild(line);
-                        }
-
-                        function drawCircleGeneric(svg, x, y, r, text, typePrefix) {
-                            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                            
-                            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                            circle.setAttribute('id', 'circle-' + typePrefix + '-' + text);
-                            circle.setAttribute('cx', x);
-                            circle.setAttribute('cy', y);
-                            circle.setAttribute('r', r);
-                            circle.setAttribute('fill', '#00DBC2');
-                            circle.setAttribute('stroke', '#0d1117');
-                            circle.setAttribute('stroke-width', '2');
-                            
-                            const textNode = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                            textNode.setAttribute('x', x);
-                            textNode.setAttribute('y', y + 5);
-                            textNode.setAttribute('text-anchor', 'middle');
-                            textNode.setAttribute('font-family', 'Poppins');
-                            textNode.setAttribute('font-weight', 'bold');
-                            textNode.setAttribute('font-size', '14px');
-                            textNode.setAttribute('fill', '#0d1117');
-                            textNode.textContent = text;
-                            
-                            g.appendChild(circle);
-                            g.appendChild(textNode);
-                            svg.appendChild(g);
-                        }
-                    </script>
                 </section>
                 <section>
                     <h3>Problema Práctico</h3>
@@ -635,91 +1366,103 @@ void preOrdenHaciaPQ(Nodo nodo, PriorityQueue&lt;Integer&gt; pq) {
                 </section>
                 <section>
                     <h3>Reto LeetCode (Árboles)</h3>
-                    <div class="box">
-                        <strong>Lowest Common Ancestor - LCA (Medio) - LC 236</strong><br>
-                        Dado un BST y dos nodos 'p' y 'q', encuentra su ancestro común más bajo (el nodo más profundo que tiene a ambos como descendientes).
+                    <div class="box box--warm">
+                        <strong>Lowest Common Ancestor - LCA (Medio) — LC 236</strong>
+                        <p>Dado un BST y dos nodos <code>p</code> y <code>q</code>, encuentra su ancestro común más bajo (el nodo más profundo que tiene a ambos como descendientes).</p>
                     </div>
-                    <ul style="font-size: 0.7em;">
-                        <li><em>Pista:</em> Aprovecha la propiedad del BST. Comienza en la raíz: si 'p' y 'q' son menores, el LCA está a la izquierda. Si son mayores, está a la derecha. Si uno es menor y otro mayor (o uno es igual a la raíz), ¡entonces la raíz actual es el LCA! (Tiempo: O(log n)).</li>
-                    </ul>
+                    <div class="fragment hint-card">
+                        <span class="hint-label">Pista:</span>
+                        <p>Aprovecha la propiedad del BST. Comienza en la raíz: si <code>p</code> y <code>q</code> son menores, el LCA está a la izquierda. Si son mayores, está a la derecha. Si uno es menor y otro mayor (o uno es igual a la raíz), ¡entonces la raíz actual es el LCA! (Tiempo: <code>O(log n)</code>).</p>
+                    </div>
                 </section>
             </section>
 
             <!-- 1.3 Selección de estructuras -->
             <section>
-                <section>
+                <section class="slide-cover">
                     <h2>1.3 Selección de Estructuras</h2>
-                    <p class="primary">El mundo real</p>
+                    <p class="section-subtitle">El mundo real</p>
                 </section>
                 <section>
                     <h3>Problema 1: Búsqueda Constante</h3>
                     <div class="box">
-                        <strong>Escenario:</strong> Una empresa necesita buscar usuarios constantemente por su correo electrónico o nombre de usuario. <br><br>
-                        ¿Qué usaría? (BST vs Hash vs Lista)
+                        <strong>Escenario:</strong> Una empresa necesita buscar usuarios constantemente por su correo electrónico o nombre de usuario.
+                        <p><strong>¿Qué usaría?</strong> (BST vs Hash vs Lista)</p>
                     </div>
-                    <table>
-                        <tr>
-                            <th>Estructura</th>
-                            <th>Búsqueda</th>
-                            <th>Inserción</th>
-                            <th>Eliminación</th>
-                        </tr>
-                        <tr>
-                            <td>Lista</td>
-                            <td>O(n)</td>
-                            <td>O(1)*</td>
-                            <td>O(1)*</td>
-                        </tr>
-                        <tr>
-                            <td>BST Equilibrado</td>
-                            <td>O(log n)</td>
-                            <td>O(log n)</td>
-                            <td>O(log n)</td>
-                        </tr>
-                        <tr>
-                            <td>Hash Table (Promedio)</td>
-                            <td><span class="accent">O(1)</span></td>
-                            <td><span class="accent">O(1)</span></td>
-                            <td><span class="accent">O(1)</span></td>
-                        </tr>
-                    </table>
-                    <p style="font-size: 0.6em; text-align:left;">* ¡El <strong>Hash Table</strong> es la mejor opción! Las operaciones toman O(1) promedio, ideal para búsquedas exactas e instantáneas.</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estructura</th>
+                                    <th>Búsqueda</th>
+                                    <th>Inserción</th>
+                                    <th>Eliminación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Lista</td>
+                                    <td>O(n)</td>
+                                    <td>O(1)*</td>
+                                    <td>O(1)*</td>
+                                </tr>
+                                <tr>
+                                    <td>BST Equilibrado</td>
+                                    <td>O(log n)</td>
+                                    <td>O(log n)</td>
+                                    <td>O(log n)</td>
+                                </tr>
+                                <tr>
+                                    <td>Hash Table (Promedio)</td>
+                                    <td><span class="accent">O(1)</span></td>
+                                    <td><span class="accent">O(1)</span></td>
+                                    <td><span class="accent">O(1)</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="fragment muted-note">* ¡El <strong class="accent">Hash Table</strong> es la mejor opción! Las operaciones toman <code>O(1)</code> promedio, ideal para búsquedas exactas e instantáneas.</p>
                 </section>
                 <section>
                     <h3>Problema 2: Alta Velocidad</h3>
                     <div class="box">
                         <strong>Escenario:</strong> Se reciben millones de registros por segundo (ej. telemetría, eventos de servidor).
-                        <br><br>¿Qué estructura usaría?
+                        <p><strong>¿Qué estructura usaría?</strong></p>
                     </div>
-                    <ul style="font-size: 0.7em;">
+                    <ul class="summary-list">
                         <li class="fragment"><strong>Solución:</strong> Una <span class="accent">Cola (Queue)</span> o un Buffer Circular (Ring Buffer).</li>
-                        <li class="fragment"><strong>¿Por qué?</strong> Las colas permiten una inserción asíncrona y eficiente en O(1) puro. Evita bloqueos y permite que otro hilo (consumidor) procese los registros a su ritmo siguiendo un patrón FIFO.</li>
+                        <li class="fragment"><strong>¿Por qué?</strong> Las colas permiten una inserción asíncrona y eficiente en <code>O(1)</code> puro. Evita bloqueos y permite que otro hilo (consumidor) procese los registros a su ritmo siguiendo un patrón FIFO.</li>
                     </ul>
                 </section>
                 <section>
-                    <h3>Retos LeetCode (Hash / Diseño)</h3>
-                    <div class="box">
-                        <strong>Two Sum (Fácil) - LC 1</strong><br>
-                        Dado un array de enteros y un 'target', devuelve los índices de los 2 números que suman el target.
+                    <h3>Reto LeetCode (Hash)</h3>
+                    <div class="box box--warm">
+                        <strong>Two Sum (Fácil) — LC 1</strong>
+                        <p>Dado un array de enteros y un <code>target</code>, devuelve los índices de los 2 números que suman el target.</p>
                     </div>
-                    <ul style="font-size: 0.6em;">
-                        <li><em>Pista:</em> Usa un HashMap para guardar el número visto y su índice. Por cada número 'x', busca si 'target - x' ya existe en el Hash. Solución en una sola pasada O(n).</li>
-                    </ul>
-                    <div class="box">
-                        <strong>LRU Cache (Medio) - LC 146</strong><br>
-                        Diseña una estructura de caché que descarte el elemento menos usado recientemente (Least Recently Used) al alcanzar su capacidad máxima.
+                    <div class="fragment hint-card">
+                        <span class="hint-label">Pista:</span>
+                        <p>Usa un <strong>HashMap</strong> para guardar el número visto y su índice. Por cada número <code>x</code>, busca si <code>target - x</code> ya existe en el Hash. Solución en una sola pasada <code>O(n)</code>.</p>
                     </div>
-                    <ul style="font-size: 0.6em;">
-                        <li><em>Pista de Diseño:</em> Combina un <strong>HashMap</strong> (para acceso O(1)) junto con una <strong>Lista Doblemente Ligada</strong> (para mover súper rápido el elemento más usado a la cabeza, o eliminar la cola en O(1)).</li>
-                    </ul>
+                </section>
+                <section>
+                    <h3>Reto LeetCode (Diseño)</h3>
+                    <div class="box box--warm">
+                        <strong>LRU Cache (Medio) — LC 146</strong>
+                        <p>Diseña una estructura de caché que descarte el elemento menos usado recientemente (Least Recently Used) al alcanzar su capacidad máxima.</p>
+                    </div>
+                    <div class="fragment hint-card">
+                        <span class="hint-label">Pista de Diseño:</span>
+                        <p>Combina un <strong>HashMap</strong> (acceso <code>O(1)</code>) junto con una <strong>Lista Doblemente Ligada</strong> (mover el más usado a la cabeza o eliminar la cola en <code>O(1)</code>).</p>
+                    </div>
                 </section>
             </section>
 
             <!-- 1.4 Complejidad -->
             <section>
-                <section>
+                <section class="slide-cover">
                     <h2>1.4 Complejidad</h2>
-                    <p class="primary">Big O en código</p>
+                    <p class="section-subtitle">Big O en código</p>
                 </section>
                 <section>
                     <h3>Ejemplo 1</h3>
@@ -730,12 +1473,14 @@ for(int i = 1; i < n; i *= 2) {
     }
 }
                     </code></pre>
-                    <div class="fragment box">
-                        <strong>Complejidad: <span class="accent">O(n log n)</span></strong><br><br>
-                        <strong>¿Por qué?</strong> <br>
-                        1. El bucle interno siempre itera 'n' veces: O(n). <br>
-                        2. El bucle externo multiplica la variable 'i' por 2 en cada paso. Alcanzar 'n' mediante multiplicaciones sucesivas toma el logaritmo base 2 de 'n' pasos: O(log n). <br>
-                        3. Ambos están anidados, por lo que multiplicamos: n * log n.
+                    <div class="fragment box box--answer">
+                        <strong>Complejidad: <span class="accent">O(n log n)</span></strong>
+                        <p><strong>¿Por qué?</strong></p>
+                        <ol class="step-list">
+                            <li>El bucle interno siempre itera <code>n</code> veces: <code>O(n)</code>.</li>
+                            <li>El bucle externo multiplica <code>i</code> por 2 en cada paso. Alcanzar <code>n</code> toma logaritmo base 2 de <code>n</code> pasos: <code>O(log n)</code>.</li>
+                            <li>Al estar anidados, multiplicamos: <code>n * log n</code>.</li>
+                        </ol>
                     </div>
                 </section>
                 <section>
@@ -746,14 +1491,13 @@ while(i < n) {
     i *= 2;
 }
                     </code></pre>
-                    <div class="fragment box">
-                        <strong>Complejidad: <span class="accent">O(log n)</span></strong><br><br>
-                        <strong>¿Por qué?</strong> <br>
-                        Al igual que en el bucle externo del ejemplo anterior, la variable 'i' crece exponencialmente (1, 2, 4, 8, 16...). El número de pasos requeridos para que 'i' alcance o supere 'n' es log₂(n). No depende linealmente de n.
+                    <div class="fragment box box--answer">
+                        <strong>Complejidad: <span class="accent">O(log n)</span></strong>
+                        <p><strong>¿Por qué?</strong> Al igual que en el bucle externo del ejemplo anterior, la variable <code>i</code> crece exponencialmente (1, 2, 4, 8, 16...). El número de pasos requeridos para alcanzar o superar <code>n</code> es <code>log₂(n)</code>. No depende linealmente de <code>n</code>.</p>
                     </div>
                 </section>
                 <section>
-                    <h3>Ejemplo 3: O(N²)</h3>
+                    <h3>Ejemplo 3</h3>
                     <pre><code class="cpp" data-trim>
 for(int i = 0; i < n; i++) {
     for(int j = 0; j < n; j++) {
@@ -761,88 +1505,731 @@ for(int i = 0; i < n; i++) {
     }
 }
                     </code></pre>
-                    <div class="fragment box">
-                        <strong>Complejidad: <span class="accent">O(N²)</span></strong><br><br>
-                        <strong>¿Por qué?</strong> <br>
-                        Para cada elemento de `n`, iteramos nuevamente `n` veces. Este es el comportamiento típico de algoritmos ingenuos como Bubble Sort.
+                    <div class="fragment box box--answer">
+                        <strong>Complejidad: <span class="accent">O(N²)</span></strong>
+                        <p><strong>¿Por qué?</strong> Para cada elemento de <code>n</code>, iteramos nuevamente <code>n</code> veces. Este es el comportamiento típico de algoritmos ingenuos como Bubble Sort.</p>
                     </div>
                 </section>
                 <section>
-                    <h3>Ejemplo 4: O(2^N)</h3>
+                    <h3>Ejemplo 4</h3>
                     <pre><code class="cpp" data-trim>
 int fibonacci(int n) {
     if (n <= 1) return n;
     return fibonacci(n - 1) + fibonacci(n - 2);
 }
                     </code></pre>
-                    <div class="fragment box">
-                        <strong>Complejidad: <span class="accent">O(2^N)</span></strong><br><br>
-                        <strong>¿Por qué?</strong> <br>
-                        Por cada llamada recursiva, hacemos dos llamadas más. Esto forma un árbol binario de llamadas de altura `n`, lo que resulta en un tiempo exponencial (el peor de los casos).
+                    <div class="fragment box box--answer">
+                        <strong>Complejidad: <span class="accent">O(2^N)</span></strong>
+                        <p><strong>¿Por qué?</strong> Por cada llamada recursiva, hacemos dos llamadas más. Esto forma un árbol binario de llamadas de altura <code>n</code>, lo que resulta en un tiempo exponencial (el peor de los casos).</p>
                     </div>
                 </section>
                 <section>
                     <h3>Desafíos de Entrevista</h3>
-                    <div class="box">
-                        <strong>1. Búsqueda Binaria</strong><br>
-                        En un arreglo ordenado, cortas la búsqueda a la mitad en cada paso. ¿Cuál es su complejidad?<br>
-                        <span class="fragment peach">R/ O(log N). Siempre que el tamaño del problema se divida por una fracción constante, es logarítmico.</span>
-                    </div>
-                    <div class="box">
-                        <strong>2. Bucles Secuenciales</strong><br>
-                        Un bucle itera el array A (tamaño N) y luego otro bucle separado itera el array B (tamaño M). ¿Complejidad?<br>
-                        <span class="fragment peach">R/ O(N + M). ¡NO es O(N*M)! Al no estar anidados, sus tiempos simplemente se suman.</span>
+                    <div class="interview-stack">
+                        <div class="box">
+                            <strong>1. Búsqueda Binaria</strong><br>
+                            En un arreglo ordenado, cortas la búsqueda a la mitad en cada paso. ¿Cuál es su complejidad?
+                            <span class="fragment peach answer-reveal">R/ O(log N). Siempre que el tamaño del problema se divida por una fracción constante, es logarítmico.</span>
+                        </div>
+                        <div class="box">
+                            <strong>2. Bucles Secuenciales</strong><br>
+                            Un bucle itera el array A (tamaño N) y luego otro bucle separado itera el array B (tamaño M). ¿Complejidad?
+                            <span class="fragment peach answer-reveal">R/ O(N + M). ¡NO es O(N*M)! Al no estar anidados, sus tiempos simplemente se suman.</span>
+                        </div>
                     </div>
                 </section>
             </section>
 
             <!-- 1.5 Integración -->
             <section>
-                <section>
+                <section class="slide-cover">
                     <h2>1.5 Integración Total</h2>
-                    <p class="primary">Árbol → Recorrido → Cola de Prioridad → HashMap</p>
+                    <p class="section-subtitle">Árbol → Recorrido → Cola de Prioridad → HashMap</p>
                 </section>
                 <section>
                     <h3>El Reto Integral</h3>
-                    <div class="box" style="font-size: 0.7em;">
-                        Contamos con un <strong>Árbol Binario</strong> que almacena <em>tareas</em> (ID, Prioridad). <br><br>
-                        1. <strong>Recorrido:</strong> Explorar el árbol (ej. Postorden) para extraer las tareas. <br>
-                        2. <strong>Cola de Prioridad:</strong> Insertarlas en una Max-PriorityQueue para que las tareas más urgentes queden al frente. <br>
-                        3. <strong>HashMap:</strong> A medida que sacamos tareas de la cola para procesarlas, registrar su estado como 'COMPLETADA' en un HashMap utilizando su ID.
+                    <div class="box">
+                        Contamos con un <strong>Árbol Binario</strong> que almacena <em>tareas</em> (ID, Prioridad).
+                        <ol class="step-list">
+                            <li><strong>Recorrido:</strong> Explorar el árbol (ej. Postorden) para extraer las tareas.</li>
+                            <li><strong>Cola de Prioridad:</strong> Insertarlas en una Max-PriorityQueue para que las tareas más urgentes queden al frente.</li>
+                            <li><strong>HashMap:</strong> A medida que sacamos tareas de la cola para procesarlas, registrar su estado como <code>'COMPLETADA'</code> en un HashMap utilizando su ID.</li>
+                        </ol>
                     </div>
-                    <p style="font-size: 0.6em;"><em>(Revisa el archivo EjemploIntegracion.java provisto para el desarrollo completo)</em></p>
+                    <p class="muted-note"><em>(Revisa el archivo <code>EjemploIntegracion.java</code> provisto para el desarrollo completo)</em></p>
                 </section>
                 <section>
                     <h3>Reto LeetCode (Integración)</h3>
-                    <div class="box">
-                        <strong>Merge k Sorted Lists (Difícil) - LC 23</strong><br>
-                        Dadas <em>k</em> listas enlazadas que ya están ordenadas independientemente, únelas todas en una sola lista enlazada final, también ordenada.
+                    <div class="box box--warm">
+                        <strong>Merge k Sorted Lists (Difícil) — LC 23</strong>
+                        <p>Dadas <em>k</em> listas enlazadas que ya están ordenadas independientemente, únelas todas en una sola lista enlazada final, también ordenada.</p>
                     </div>
-                    <ul style="font-size: 0.7em;">
-                        <li><em>Pista Magistral:</em> Usa una <strong>Cola de Prioridad (Min-Heap)</strong>. Inserta la cabeza de cada una de las <em>k</em> listas en el Heap. Extrae el menor (se unirá a tu lista de respuesta) y, si ese nodo extraído tiene un siguiente nodo en su propia lista original, insértalo de vuelta en el Heap.</li>
-                        <li><em>Complejidad:</em> Tiempo O(N log k), donde N es el total de nodos en todas las listas.</li>
-                    </ul>
+                    <div class="fragment hint-card">
+                        <span class="hint-label">Pista Magistral:</span>
+                        <p>Usa una <strong>Cola de Prioridad (Min-Heap)</strong>. Inserta la cabeza de cada una de las <em>k</em> listas en el Heap. Extrae el menor (se unirá a tu lista de respuesta) y, si ese nodo extraído tiene un siguiente nodo en su propia lista original, insértalo de vuelta en el Heap.</p>
+                        <p><strong class="accent">Complejidad:</strong> Tiempo <code>O(N log k)</code>, donde <code>N</code> es el total de nodos en todas las listas.</p>
+                    </div>
                 </section>
             </section>
             
-            <section>
+            <section class="slide-cover">
                 <h1 class="accent">¡A Programar!</h1>
                 <p>¿Tienen alguna pregunta?</p>
+                <nav class="resource-links" aria-label="Siguientes presentaciones">
+                    <a class="resource-link" href="https://sebastianzapatar.github.io/heapspriorityqueue/" target="_blank" rel="noopener noreferrer">
+                        <span>Heaps y Priority Queue</span>
+                        <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M7 17L17 7M9 7h8v8"/>
+                        </svg>
+                    </a>
+                    <a class="resource-link" href="https://sebastianzapatar.github.io/grafos/" target="_blank" rel="noopener noreferrer">
+                        <span>Grafos</span>
+                        <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M7 17L17 7M9 7h8v8"/>
+                        </svg>
+                    </a>
+                </nav>
             </section>
         </div>
     </div>
 
-    <!-- Scripts de Reveal.js -->
+    <!-- Scripts de Reveal.js y Laboratorio BST vs. AVL -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
     <script>
-        Reveal.initialize({
-            controls: true,
-            progress: true,
-            center: true,
-            hash: true,
-            plugins: [ RevealHighlight ]
-        });
+        (function () {
+            const SVG_NS = 'http://www.w3.org/2000/svg';
+            const MIN_VAL = -9999;
+            const MAX_VAL = 9999;
+            const MAX_NODES = 31;
+            const TRAVERSAL_LABELS = {
+                pre: 'PREORDEN',
+                in: 'INORDEN',
+                post: 'POSTORDEN'
+            };
+
+            class TreeNode {
+                constructor(val) {
+                    this.val = val;
+                    this.left = null;
+                    this.right = null;
+                    this.height = 1;
+                }
+            }
+
+            let bstRoot = null;
+            let avlRoot = null;
+            let existingValues = new Set();
+            let avlRotationCount = 0;
+            let traversalRunId = 0;
+            let activeTimer = null;
+
+            const form = document.getElementById('tree-insert-form');
+            const input = document.getElementById('tree-node-input');
+            const btnPresetSorted = document.getElementById('btn-preset-sorted');
+            const btnPresetDouble = document.getElementById('btn-preset-double');
+            const btnReset = document.getElementById('btn-reset');
+            const btnStop = document.getElementById('btn-stop');
+            const traversalButtons = Array.from(document.querySelectorAll('[data-traversal]'));
+            const feedbackEl = document.getElementById('lab-feedback');
+            const bstSvg = document.getElementById('tree-svg-bst');
+            const avlSvg = document.getElementById('tree-svg-avl');
+            const bstNodesEl = document.getElementById('bst-nodes-metric');
+            const bstHeightEl = document.getElementById('bst-height-metric');
+            const avlNodesEl = document.getElementById('avl-nodes-metric');
+            const avlHeightEl = document.getElementById('avl-height-metric');
+            const avlRotEl = document.getElementById('avl-rotations-metric');
+            const bstTraversalEl = document.getElementById('traversal-result-bst');
+            const avlTraversalEl = document.getElementById('traversal-result-avl');
+
+            function getHeight(node) {
+                return node ? node.height : 0;
+            }
+
+            function computeHeight(node) {
+                if (!node) return 0;
+                return 1 + Math.max(computeHeight(node.left), computeHeight(node.right));
+            }
+
+            function getBalance(node) {
+                return node ? getHeight(node.left) - getHeight(node.right) : 0;
+            }
+
+            function insertBST(root, val) {
+                if (!root) return new TreeNode(val);
+                if (val < root.val) root.left = insertBST(root.left, val);
+                else if (val > root.val) root.right = insertBST(root.right, val);
+                root.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+                return root;
+            }
+
+            function rightRotate(y) {
+                const x = y.left;
+                const T2 = x.right;
+                x.right = y;
+                y.left = T2;
+                y.height = 1 + Math.max(getHeight(y.left), getHeight(y.right));
+                x.height = 1 + Math.max(getHeight(x.left), getHeight(x.right));
+                return x;
+            }
+
+            function leftRotate(x) {
+                const y = x.right;
+                const T2 = y.left;
+                y.left = x;
+                x.right = T2;
+                x.height = 1 + Math.max(getHeight(x.left), getHeight(x.right));
+                y.height = 1 + Math.max(getHeight(y.left), getHeight(y.right));
+                return y;
+            }
+
+            function insertAVL(node, val, events) {
+                if (!node) return new TreeNode(val);
+                if (val < node.val) node.left = insertAVL(node.left, val, events);
+                else if (val > node.val) node.right = insertAVL(node.right, val, events);
+                else return node;
+
+                node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+                const balance = getBalance(node);
+
+                if (balance > 1 && val < node.left.val) {
+                    avlRotationCount += 1;
+                    events.push('LL en ' + node.val);
+                    return rightRotate(node);
+                }
+                if (balance < -1 && val > node.right.val) {
+                    avlRotationCount += 1;
+                    events.push('RR en ' + node.val);
+                    return leftRotate(node);
+                }
+                if (balance > 1 && val > node.left.val) {
+                    avlRotationCount += 1;
+                    events.push('LR en ' + node.val);
+                    node.left = leftRotate(node.left);
+                    return rightRotate(node);
+                }
+                if (balance < -1 && val < node.right.val) {
+                    avlRotationCount += 1;
+                    events.push('RL en ' + node.val);
+                    node.right = rightRotate(node.right);
+                    return leftRotate(node);
+                }
+                return node;
+            }
+
+            function collectTraversal(node, mode, out) {
+                if (!node) return;
+                if (mode === 'pre') out.push(node.val);
+                collectTraversal(node.left, mode, out);
+                if (mode === 'in') out.push(node.val);
+                collectTraversal(node.right, mode, out);
+                if (mode === 'post') out.push(node.val);
+            }
+
+            function setFeedback(text, tone) {
+                feedbackEl.textContent = text;
+                feedbackEl.className = 'lab-feedback' + (tone ? ' lab-feedback--' + tone : '');
+            }
+
+            function clearTraversalHighlights() {
+                document.querySelectorAll('.tree-node-circle').forEach(function (circle) {
+                    circle.setAttribute('fill', '#00DBC2');
+                    circle.setAttribute('stroke', '#0d1117');
+                    circle.setAttribute('stroke-width', '2');
+                });
+                document.querySelectorAll('.tree-node-ring').forEach(function (ring) {
+                    ring.setAttribute('opacity', '0');
+                });
+            }
+
+            function cancelTraversal(silent) {
+                const wasActive = activeTimer !== null;
+                traversalRunId += 1;
+                if (activeTimer !== null) {
+                    clearTimeout(activeTimer);
+                    activeTimer = null;
+                }
+                btnStop.disabled = true;
+                clearTraversalHighlights();
+                if (wasActive && !silent) {
+                    setFeedback('Animación de recorrido detenida.', 'info');
+                }
+            }
+
+            function resetTraversalOutputs() {
+                bstTraversalEl.textContent = 'Recorrido BST: —';
+                bstTraversalEl.className = 'race-traversal race-traversal--empty';
+                avlTraversalEl.textContent = 'Recorrido AVL: —';
+                avlTraversalEl.className = 'race-traversal race-traversal--empty';
+            }
+
+            function syncControlsAndMetrics() {
+                const count = existingValues.size;
+                const bstH = computeHeight(bstRoot);
+                const avlH = getHeight(avlRoot);
+                const isEmpty = count === 0;
+
+                btnReset.disabled = isEmpty;
+                traversalButtons.forEach(function (btn) {
+                    btn.disabled = isEmpty;
+                });
+
+                bstNodesEl.textContent = 'Nodos: ' + count;
+                avlNodesEl.textContent = 'Nodos: ' + count;
+                bstHeightEl.textContent = 'Altura: ' + bstH;
+                avlHeightEl.textContent = 'Altura: ' + avlH;
+                avlRotEl.textContent = 'Rot: ' + avlRotationCount;
+
+                bstHeightEl.className = bstH >= avlH + 2 ? 'metric-warn' : '';
+                avlHeightEl.className = count > 0 ? 'metric-highlight' : '';
+            }
+
+            function renderTreeSvg(svg, root, prefix, showBalance, labelName) {
+                while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+                const titleEl = document.createElementNS(SVG_NS, 'title');
+                const count = existingValues.size;
+                const h = prefix === 'avl' ? getHeight(root) : computeHeight(root);
+                titleEl.textContent = root
+                    ? labelName + ' con ' + count + ' nodos y altura ' + h
+                    : labelName + ' vacío';
+                svg.appendChild(titleEl);
+                svg.setAttribute('aria-label', titleEl.textContent);
+
+                if (!root) {
+                    svg.setAttribute('viewBox', '0 0 420 260');
+                    const emptyText = document.createElementNS(SVG_NS, 'text');
+                    emptyText.setAttribute('x', '210');
+                    emptyText.setAttribute('y', '126');
+                    emptyText.setAttribute('text-anchor', 'middle');
+                    emptyText.setAttribute('fill', '#b8c4e0');
+                    emptyText.setAttribute('font-family', 'Poppins, sans-serif');
+                    emptyText.setAttribute('font-size', '15');
+                    emptyText.textContent = 'Árbol vacío';
+                    svg.appendChild(emptyText);
+
+                    const hintText = document.createElementNS(SVG_NS, 'text');
+                    hintText.setAttribute('x', '210');
+                    hintText.setAttribute('y', '150');
+                    hintText.setAttribute('text-anchor', 'middle');
+                    hintText.setAttribute('fill', '#7f8fb3');
+                    hintText.setAttribute('font-family', 'Poppins, sans-serif');
+                    hintText.setAttribute('font-size', '12');
+                    hintText.textContent = 'Inserta un entero o pulsa Demo';
+                    svg.appendChild(hintText);
+                    return;
+                }
+
+                // Assign guaranteed non-overlapping inorder X and depth Y coordinates
+                const nodes = [];
+                const edges = [];
+                const colGap = 54;
+                const rowGap = 64;
+                let colCursor = 0;
+
+                function assignCoords(node, depth) {
+                    if (!node) return null;
+                    const leftPos = assignCoords(node.left, depth + 1);
+                    const pos = {
+                        node: node,
+                        x: colCursor * colGap,
+                        y: depth * rowGap
+                    };
+                    colCursor += 1;
+                    nodes.push(pos);
+                    const rightPos = assignCoords(node.right, depth + 1);
+                    if (leftPos) edges.push([pos, leftPos]);
+                    if (rightPos) edges.push([pos, rightPos]);
+                    return pos;
+                }
+
+                assignCoords(root, 0);
+
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                nodes.forEach(function (p) {
+                    if (p.x < minX) minX = p.x;
+                    if (p.x > maxX) maxX = p.x;
+                    if (p.y < minY) minY = p.y;
+                    if (p.y > maxY) maxY = p.y;
+                });
+
+                const padX = 46;
+                const padY = 42;
+                const contentW = (maxX - minX) + padX * 2;
+                const contentH = (maxY - minY) + padY * 2;
+                const viewW = Math.max(420, contentW);
+                const viewH = Math.max(260, contentH);
+                const offsetX = (viewW - (maxX - minX)) / 2 - minX;
+                const offsetY = Math.max(padY, (viewH - (maxY - minY)) / 2) - minY;
+
+                svg.setAttribute('viewBox', '0 0 ' + viewW + ' ' + viewH);
+
+                // Draw edges first
+                edges.forEach(function (pair) {
+                    const line = document.createElementNS(SVG_NS, 'line');
+                    line.setAttribute('x1', pair[0].x + offsetX);
+                    line.setAttribute('y1', pair[0].y + offsetY);
+                    line.setAttribute('x2', pair[1].x + offsetX);
+                    line.setAttribute('y2', pair[1].y + offsetY);
+                    line.setAttribute('stroke', '#38bdf8');
+                    line.setAttribute('stroke-width', '2.5');
+                    line.setAttribute('stroke-linecap', 'round');
+                    svg.appendChild(line);
+                });
+
+                // Draw nodes on top
+                nodes.forEach(function (p) {
+                    const cx = p.x + offsetX;
+                    const cy = p.y + offsetY;
+                    const g = document.createElementNS(SVG_NS, 'g');
+
+                    const ring = document.createElementNS(SVG_NS, 'circle');
+                    ring.setAttribute('id', 'ring-' + prefix + '-' + p.node.val);
+                    ring.setAttribute('class', 'tree-node-ring');
+                    ring.setAttribute('cx', cx);
+                    ring.setAttribute('cy', cy);
+                    ring.setAttribute('r', '26');
+                    ring.setAttribute('fill', 'none');
+                    ring.setAttribute('stroke', '#ffffff');
+                    ring.setAttribute('stroke-width', '2.5');
+                    ring.setAttribute('opacity', '0');
+
+                    const circle = document.createElementNS(SVG_NS, 'circle');
+                    circle.setAttribute('id', 'circle-' + prefix + '-' + p.node.val);
+                    circle.setAttribute('class', 'tree-node-circle');
+                    circle.setAttribute('cx', cx);
+                    circle.setAttribute('cy', cy);
+                    circle.setAttribute('r', '20');
+                    circle.setAttribute('fill', '#00DBC2');
+                    circle.setAttribute('stroke', '#0d1117');
+                    circle.setAttribute('stroke-width', '2');
+
+                    const labelStr = String(p.node.val);
+                    const fontSize = labelStr.length >= 5 ? '10.5' : (labelStr.length === 4 ? '12' : '14');
+                    const text = document.createElementNS(SVG_NS, 'text');
+                    text.setAttribute('x', cx);
+                    text.setAttribute('y', cy);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('dominant-baseline', 'central');
+                    text.setAttribute('font-family', 'JetBrains Mono, monospace');
+                    text.setAttribute('font-weight', '700');
+                    text.setAttribute('font-size', fontSize);
+                    text.setAttribute('fill', '#0d1117');
+                    text.textContent = labelStr;
+
+                    g.appendChild(ring);
+                    g.appendChild(circle);
+                    g.appendChild(text);
+
+                    if (showBalance) {
+                        const bf = getBalance(p.node);
+                        const bfText = document.createElementNS(SVG_NS, 'text');
+                        bfText.setAttribute('x', cx + 22);
+                        bfText.setAttribute('y', cy - 14);
+                        bfText.setAttribute('font-family', 'JetBrains Mono, monospace');
+                        bfText.setAttribute('font-size', '10.5');
+                        bfText.setAttribute('font-weight', '600');
+                        bfText.setAttribute('fill', bf === 0 ? '#b8c4e0' : '#FFBC7D');
+                        bfText.setAttribute('paint-order', 'stroke');
+                        bfText.setAttribute('stroke', '#0b1120');
+                        bfText.setAttribute('stroke-width', '5');
+                        bfText.setAttribute('stroke-linejoin', 'round');
+                        bfText.textContent = (bf > 0 ? '+' : '') + bf;
+                        g.appendChild(bfText);
+                    }
+
+                    svg.appendChild(g);
+                });
+            }
+
+            function renderBoth() {
+                renderTreeSvg(bstSvg, bstRoot, 'bst', false, 'BST Normal');
+                renderTreeSvg(avlSvg, avlRoot, 'avl', true, 'Árbol AVL');
+                syncControlsAndMetrics();
+            }
+
+            function parseBatchInput(raw) {
+                const trimmed = raw.trim();
+                if (!trimmed) {
+                    return { error: 'Ingresa un número entero (ej. 25) o una lista separada por comas (ej. 10, 20, 30).' };
+                }
+                const tokens = trimmed.split(/[\s,;]+/).filter(Boolean);
+                const parsed = [];
+                for (let i = 0; i < tokens.length; i += 1) {
+                    const token = tokens[i];
+                    if (!/^[+-]?\d+$/.test(token)) {
+                        return { error: 'Entrada inválida («' + token.slice(0, 18) + '»): usa solo números enteros.' };
+                    }
+                    const num = parseInt(token, 10);
+                    if (num < MIN_VAL || num > MAX_VAL) {
+                        return { error: 'El valor ' + num + ' está fuera de rango: usa enteros entre ' + MIN_VAL + ' y ' + MAX_VAL + '.' };
+                    }
+                    parsed.push(num);
+                }
+                return { values: parsed };
+            }
+
+            function insertBatch(values, isPreset) {
+                cancelTraversal(true);
+                resetTraversalOutputs();
+
+                const inserted = [];
+                const duplicates = [];
+                const rotationEvents = [];
+                let capped = false;
+
+                for (let i = 0; i < values.length; i += 1) {
+                    const val = values[i];
+                    if (existingValues.has(val)) {
+                        duplicates.push(val);
+                        continue;
+                    }
+                    if (existingValues.size >= MAX_NODES) {
+                        capped = true;
+                        break;
+                    }
+                    existingValues.add(val);
+                    bstRoot = insertBST(bstRoot, val);
+                    avlRoot = insertAVL(avlRoot, val, rotationEvents);
+                    inserted.push(val);
+                }
+
+                renderBoth();
+
+                if (inserted.length === 0) {
+                    if (capped) {
+                        setFeedback('Límite visual de ' + MAX_NODES + ' nodos alcanzado. Pulsa «Reiniciar» para crear otro árbol.', 'warn');
+                    } else {
+                        setFeedback('Sin cambios: ' + duplicates.join(', ') + ' ya existe en ambos árboles (sin duplicados).', 'warn');
+                    }
+                    return false;
+                }
+
+                const parts = [];
+                parts.push((isPreset ? 'Demo cargada: ' : 'Insertado: ') + inserted.join(', '));
+                if (rotationEvents.length > 0) {
+                    parts.push('AVL rotó (' + rotationEvents.join(' · ') + ')');
+                }
+                parts.push('Altura BST ' + computeHeight(bstRoot) + ' vs AVL ' + getHeight(avlRoot));
+                if (duplicates.length > 0) {
+                    parts.push('omitidos duplicados: ' + duplicates.join(', '));
+                }
+                if (capped) {
+                    parts.push('límite de ' + MAX_NODES + ' nodos alcanzado');
+                }
+                setFeedback(parts.join(' · ') + '.', rotationEvents.length > 0 ? 'success' : 'info');
+                return true;
+            }
+
+            function resetAll() {
+                cancelTraversal(true);
+                bstRoot = null;
+                avlRoot = null;
+                existingValues.clear();
+                avlRotationCount = 0;
+                input.removeAttribute('aria-invalid');
+                resetTraversalOutputs();
+                renderBoth();
+                setFeedback('Árboles reiniciados. Inserta un entero o pulsa «Demo: 10..60» para comparar.', 'info');
+            }
+
+            function waitMs(ms, runId) {
+                return new Promise(function (resolve) {
+                    activeTimer = setTimeout(function () {
+                        activeTimer = null;
+                        resolve(runId === traversalRunId);
+                    }, ms);
+                });
+            }
+
+            async function runRaceTraversal(mode) {
+                if (existingValues.size === 0) {
+                    setFeedback('Agrega al menos un nodo antes de ejecutar un recorrido.', 'warn');
+                    return;
+                }
+
+                cancelTraversal(true);
+                const myRunId = traversalRunId;
+                btnStop.disabled = false;
+
+                const label = TRAVERSAL_LABELS[mode];
+                const bstSeq = [];
+                const avlSeq = [];
+                collectTraversal(bstRoot, mode, bstSeq);
+                collectTraversal(avlRoot, mode, avlSeq);
+
+                bstTraversalEl.className = 'race-traversal';
+                avlTraversalEl.className = 'race-traversal';
+                bstTraversalEl.textContent = label + ' BST: ';
+                avlTraversalEl.textContent = label + ' AVL: ';
+                setFeedback('Ejecutando recorrido ' + label + ' en ambos árboles…', 'info');
+
+                const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const stepDelay = reducedMotion ? 180 : 620;
+                const totalSteps = Math.max(bstSeq.length, avlSeq.length);
+                const bstVisited = [];
+                const avlVisited = [];
+
+                for (let idx = 0; idx < totalSteps; idx += 1) {
+                    if (myRunId !== traversalRunId) return;
+
+                    const bVal = bstSeq[idx];
+                    const aVal = avlSeq[idx];
+                    const bCircle = bVal !== undefined ? document.getElementById('circle-bst-' + bVal) : null;
+                    const bRing = bVal !== undefined ? document.getElementById('ring-bst-' + bVal) : null;
+                    const aCircle = aVal !== undefined ? document.getElementById('circle-avl-' + aVal) : null;
+                    const aRing = aVal !== undefined ? document.getElementById('ring-avl-' + aVal) : null;
+
+                    if (bCircle) {
+                        bCircle.setAttribute('fill', '#f47a66');
+                        bCircle.setAttribute('stroke', '#ffffff');
+                        bCircle.setAttribute('stroke-width', '2.5');
+                    }
+                    if (bRing) bRing.setAttribute('opacity', '0.9');
+
+                    if (aCircle) {
+                        aCircle.setAttribute('fill', '#f47a66');
+                        aCircle.setAttribute('stroke', '#ffffff');
+                        aCircle.setAttribute('stroke-width', '2.5');
+                    }
+                    if (aRing) aRing.setAttribute('opacity', '0.9');
+
+                    const keepGoing = await waitMs(stepDelay, myRunId);
+                    if (!keepGoing) return;
+
+                    if (bCircle) {
+                        bCircle.setAttribute('fill', '#00DBC2');
+                        bCircle.setAttribute('stroke', '#0d1117');
+                        bCircle.setAttribute('stroke-width', '2');
+                    }
+                    if (bRing) bRing.setAttribute('opacity', '0');
+
+                    if (aCircle) {
+                        aCircle.setAttribute('fill', '#00DBC2');
+                        aCircle.setAttribute('stroke', '#0d1117');
+                        aCircle.setAttribute('stroke-width', '2');
+                    }
+                    if (aRing) aRing.setAttribute('opacity', '0');
+
+                    if (bVal !== undefined) {
+                        bstVisited.push(bVal);
+                        bstTraversalEl.textContent = label + ' BST: ' + bstVisited.join(' → ');
+                    }
+                    if (aVal !== undefined) {
+                        avlVisited.push(aVal);
+                        avlTraversalEl.textContent = label + ' AVL: ' + avlVisited.join(' → ');
+                    }
+                }
+
+                if (myRunId === traversalRunId) {
+                    btnStop.disabled = true;
+                    const sameNote = mode === 'in'
+                        ? ' Nota: ambos árboles producen exactamente el mismo orden ascendente.'
+                        : '';
+                    setFeedback('Recorrido ' + label + ' completado.' + sameNote, 'success');
+                }
+            }
+
+            // Event wiring
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const res = parseBatchInput(input.value);
+                    if (res.error) {
+                        input.setAttribute('aria-invalid', 'true');
+                        setFeedback(res.error, 'error');
+                        input.focus();
+                        return;
+                    }
+                    input.removeAttribute('aria-invalid');
+                    const insertedAny = insertBatch(res.values, false);
+                    if (insertedAny) {
+                        input.value = '';
+                    }
+                    input.focus();
+                });
+            }
+
+            if (input) {
+                input.addEventListener('keydown', function (e) {
+                    if (e.key !== 'Escape') {
+                        e.stopPropagation();
+                    }
+                });
+            }
+
+            if (btnPresetSorted) {
+                btnPresetSorted.addEventListener('click', function () {
+                    resetAll();
+                    insertBatch([10, 20, 30, 40, 50, 60], true);
+                });
+            }
+
+            if (btnPresetDouble) {
+                btnPresetDouble.addEventListener('click', function () {
+                    resetAll();
+                    insertBatch([30, 10, 20, 50, 40, 35], true);
+                });
+            }
+
+            if (btnReset) {
+                btnReset.addEventListener('click', resetAll);
+            }
+
+            if (btnStop) {
+                btnStop.addEventListener('click', function () {
+                    cancelTraversal(false);
+                });
+            }
+
+            traversalButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    runRaceTraversal(btn.getAttribute('data-traversal'));
+                });
+            });
+
+            // Initialize Reveal.js with responsive native mobile mode & offline fallback
+            if (typeof Reveal !== 'undefined') {
+                const mobileQuery = window.matchMedia('(max-width: 768px)');
+                Reveal.initialize({
+                    controls: true,
+                    progress: true,
+                    center: !mobileQuery.matches,
+                    disableLayout: mobileQuery.matches,
+                    hash: true,
+                    plugins: typeof RevealHighlight !== 'undefined' ? [ RevealHighlight ] : []
+                });
+                Reveal.on('slidechanged', function () {
+                    cancelTraversal(true);
+                });
+                const syncRevealViewport = function (e) {
+                    Reveal.configure({
+                        disableLayout: e.matches,
+                        center: !e.matches
+                    });
+                    if (!e.matches) {
+                        Reveal.layout();
+                    }
+                };
+                if (typeof mobileQuery.addEventListener === 'function') {
+                    mobileQuery.addEventListener('change', syncRevealViewport);
+                } else if (typeof mobileQuery.addListener === 'function') {
+                    mobileQuery.addListener(syncRevealViewport);
+                }
+            } else {
+                document.body.classList.add('reveal-offline');
+            }
+
+            renderBoth();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const demoParam = urlParams.get('labDemo');
+            if (demoParam === 'sorted') {
+                insertBatch([10, 20, 30, 40, 50, 60], true);
+            } else if (demoParam === 'double') {
+                insertBatch([30, 10, 20, 50, 40, 35], true);
+            }
+        })();
     </script>
 </body>
 </html>
